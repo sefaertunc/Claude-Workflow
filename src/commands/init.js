@@ -22,6 +22,7 @@ import {
   UNIVERSAL_SKILLS,
   TEMPLATE_SKILLS,
   NOTIFICATION_COMMANDS,
+  TECH_STACKS,
 } from '../data/agents.js';
 
 export async function initCommand() {
@@ -93,7 +94,10 @@ export async function initCommand() {
   });
 
   // Step 5: Build template variables
-  const techStackLines = [language !== 'other' ? `- ${language.charAt(0).toUpperCase() + language.slice(1)}` : '- Not specified'];
+  // Use the full display label from TECH_STACKS
+  const stackEntry = TECH_STACKS.find((s) => s.value === language);
+  const stackLabel = stackEntry ? stackEntry.name : 'Not specified';
+  const techStackLines = [`- ${stackLabel}`];
   if (useDocker) techStackLines.push('- Docker');
   const techStackText = techStackLines.join('\n');
 

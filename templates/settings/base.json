@@ -41,7 +41,7 @@
         "matcher": "Write|Edit",
         "hooks": [{
           "type": "command",
-          "command": "{formatter_command} || true"
+          "command": "{formatter_command}"
         }]
       },
       {
