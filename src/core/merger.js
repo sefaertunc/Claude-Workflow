@@ -185,7 +185,12 @@ async function mergeCommands(projectRoot, existingScan, report) {
 
 export async function mergeSettingsPermissionsAndHooks(projectRoot, workflowSettings, report) {
   const existingRaw = await readFile(path.join(projectRoot, '.claude', 'settings.json'));
-  const existing = JSON.parse(existingRaw);
+  let existing;
+  try {
+    existing = JSON.parse(existingRaw);
+  } catch (err) {
+    throw new Error(`existing .claude/settings.json contains invalid JSON: ${err.message}`);
+  }
 
   // Merge permissions (Tier 1)
   const existingAllow = existing.permissions?.allow || [];
@@ -281,7 +286,12 @@ async function mergeMcpJson(projectRoot, existingScan) {
 
   // Merge mcpServers — user's servers take priority
   const existingRaw = await readFile(path.join(projectRoot, '.mcp.json'));
-  const existing = JSON.parse(existingRaw);
+  let existing;
+  try {
+    existing = JSON.parse(existingRaw);
+  } catch (err) {
+    throw new Error(`existing .mcp.json contains invalid JSON: ${err.message}`);
+  }
   const workflowRaw = await readTemplate('mcp-json.json');
   const workflow = JSON.parse(workflowRaw);
 
