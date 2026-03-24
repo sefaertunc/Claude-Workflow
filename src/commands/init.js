@@ -591,7 +591,7 @@ export async function initCommand() {
     // Scenario B: merge
     const spinner = ora('Merging workflow...').start();
     try {
-      const report = await performMerge(projectRoot, existingScan, selections, variables);
+      const report = await performMerge(projectRoot, existingScan, selections, variables, { spinner });
       await computeAndWriteWorkflowMeta(projectRoot, selections, version);
       spinner.succeed('Workflow merged successfully!');
       displayMergeReport(report, backupPath);

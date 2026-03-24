@@ -331,7 +331,7 @@ async function handleClaudeMd(projectRoot, existingScan, variables, report) {
 
 // --- Main merge function ---
 
-export async function performMerge(projectRoot, existingScan, selections, variables) {
+export async function performMerge(projectRoot, existingScan, selections, variables, { spinner } = {}) {
   const report = {
     added: { skills: [], agents: [], commands: [], permissions: 0, hooks: 0 },
     conflicts: { skills: [], agents: [], commands: [] },
@@ -343,10 +343,19 @@ export async function performMerge(projectRoot, existingScan, selections, variab
   await mergeSkills(projectRoot, existingScan, variables, report);
   await mergeAgents(projectRoot, existingScan, selections.selectedAgents, report);
   await mergeCommands(projectRoot, existingScan, report);
+
+  // Stop spinner before settings merge — hook conflicts may prompt for input
+  if (spinner) spinner.stop();
   await mergeSettingsJson(projectRoot, existingScan, selections, report);
+  if (spinner) spinner.start();
+
   await mergeMcpJson(projectRoot, existingScan);
   await mergeDocSpecs(projectRoot, existingScan, variables, selections, report);
+
+  // Stop spinner before CLAUDE.md merge — interactive prompts for section selection
+  if (spinner) spinner.stop();
   await handleClaudeMd(projectRoot, existingScan, variables, report);
+  if (spinner) spinner.start();
 
   return report;
 }

@@ -14,6 +14,7 @@ vi.mock('inquirer', () => ({
 vi.mock('ora', () => ({
   default: () => ({
     start: vi.fn().mockReturnThis(),
+    stop: vi.fn().mockReturnThis(),
     succeed: vi.fn().mockReturnThis(),
     fail: vi.fn().mockReturnThis(),
     text: '',
