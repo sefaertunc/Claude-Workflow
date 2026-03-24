@@ -33,10 +33,13 @@ export async function promptProjectType() {
       display.dim('You may not need both.');
       const { continueAnyway } = await inquirer.prompt([
         {
-          type: 'confirm',
+          type: 'list',
           name: 'continueAnyway',
           message: 'Continue anyway?',
-          default: true,
+          choices: [
+            { name: 'Yes', value: true },
+            { name: 'No', value: false },
+          ],
         },
       ]);
       if (!continueAnyway) {

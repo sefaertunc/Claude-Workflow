@@ -558,10 +558,13 @@ export async function initCommand() {
 
     const { proceed } = await inquirer.prompt([
       {
-        type: 'confirm',
+        type: 'list',
         name: 'proceed',
         message: 'Proceed with workflow installation?',
-        default: true,
+        choices: [
+          { name: 'Yes', value: true },
+          { name: 'No', value: false },
+        ],
       },
     ]);
 

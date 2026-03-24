@@ -20,10 +20,13 @@ export async function promptTechStack(_projectTypes) {
 
   const { useDocker } = await inquirer.prompt([
     {
-      type: 'confirm',
+      type: 'list',
       name: 'useDocker',
       message: 'Do you use Docker currently?',
-      default: false,
+      choices: [
+        { name: 'Yes', value: true },
+        { name: 'No', value: false },
+      ],
       suffix: '\n  ℹ If you add Docker later, run `claude-workflow upgrade`.',
     },
   ]);

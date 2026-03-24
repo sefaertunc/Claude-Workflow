@@ -99,10 +99,13 @@ export async function upgradeCommand() {
   // 5. Confirm
   const { proceed } = await inquirer.prompt([
     {
-      type: 'confirm',
+      type: 'list',
       name: 'proceed',
       message: 'Proceed with upgrade?',
-      default: true,
+      choices: [
+        { name: 'Yes', value: true },
+        { name: 'No', value: false },
+      ],
     },
   ]);
 

@@ -134,10 +134,13 @@ export async function interactiveSectionMerge(existingContent, renderedTemplate,
 
     const { addSection } = await inquirer.prompt([
       {
-        type: 'confirm',
+        type: 'list',
         name: 'addSection',
         message: `Add "${sectionName}" to your CLAUDE.md?`,
-        default: true,
+        choices: [
+          { name: 'Yes', value: true },
+          { name: 'No', value: false },
+        ],
       },
     ]);
 
