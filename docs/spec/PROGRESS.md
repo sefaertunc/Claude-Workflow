@@ -1,7 +1,7 @@
 # PROGRESS.md
 
 ## Current Status
-**Phase:** Phase 1 complete, ready for Phase 2
+**Phase:** Phase 3 complete (Scenario B), ready for Phase 4
 **Last Updated:** 2026-03-24
 
 ## Completed
@@ -32,14 +32,26 @@
   - [x] SPEC.md tech stack table: comma-separated, Docker in separate row
   - [x] Stack-specific commands in CLAUDE.md (pytest, npm, cargo, go, docker)
   - [x] Template skills text points to /setup
+- [x] Phase 3: Smart Merge (Scenario B) — init into existing projects
+  - [x] Scenario detection: fresh / existing / upgrade (detector.js)
+  - [x] Timestamped backup system: create, list, restore (backup.js)
+  - [x] Three-tier merge strategy (merger.js):
+    - Tier 1 (additive): missing skills, agents, commands, permissions, hooks
+    - Tier 2 (safe alongside): conflicting files saved as .workflow-ref.md
+    - Tier 3 (interactive): CLAUDE.md suggestions, hook conflict resolution
+  - [x] CLAUDE.md analysis: detect missing sections, generate suggestions file (claude-md-merge.js)
+  - [x] Hook conflict resolution prompt: keep / replace / chain (conflict-resolution.js)
+  - [x] Refactored init.js: dispatcher pattern, shared prompts between Scenario A and B
+  - [x] Scenario C detection: prints upgrade message when workflow-meta.json exists
+  - [x] File utilities: copyDirectory, removeDirectory added to file.js
+  - [x] Settings builder extracted as shared function (buildSettingsJson)
 
 ## In Progress
 None
 
 ## Next Steps
-1. Phase 2: Scenario B — init into existing project with merge logic
-2. Phase 3: Scenario C — upgrade command for existing workflow installations
-3. Phase 4: status, backup, restore, diff commands
+1. Phase 4: Scenario C — upgrade command for existing workflow installations
+2. Phase 5: status, backup, restore, diff commands
 
 ## Blockers
 None
@@ -48,4 +60,4 @@ None
 - The project should use its own workflow patterns where possible
 - Reference docs/spec/SPEC.md for all design decisions
 - Reference docs/reference/workflow-reference.docx for the full workflow guide
-- 48 tests passing, lint clean as of Phase 1 completion
+- 93 tests passing (9 test files), lint clean as of Phase 3 completion
