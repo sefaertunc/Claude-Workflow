@@ -1,7 +1,7 @@
 # PROGRESS.md
 
 ## Current Status
-**Phase:** Phase 3 complete (Scenario B), ready for Phase 4
+**Phase:** Phase 4 complete (Upgrade & Utility Commands)
 **Last Updated:** 2026-03-24
 
 ## Completed
@@ -46,12 +46,23 @@
   - [x] File utilities: copyDirectory, removeDirectory added to file.js
   - [x] Settings builder extracted as shared function (buildSettingsJson)
 
+- [x] Phase 4: Upgrade & Utility Commands
+  - [x] `upgrade` command (Scenario C): version comparison, file categorization, auto-update/conflict resolution, settings merge, backup-before-upgrade
+  - [x] `status` command: version, dates, project config, customized files, pending review, hooks/permissions count
+  - [x] `backup` command: manual backup with contents summary
+  - [x] `restore` command: list backups with relative time, select, confirm, restore
+  - [x] `diff` command: compare current vs installed (modified, deleted, extra, outdated, unchanged)
+  - [x] Shared file-categorizer.js: buildTemplateHashMap(), categorizeFiles() reused by upgrade and diff
+  - [x] Extracted mergeSettingsPermissionsAndHooks() from merger.js for upgrade reuse
+  - [x] Added useDocker field to workflow-meta.json for settings rebuild during upgrade
+  - [x] relativeTime() utility for backup listing display
+  - [x] All placeholder commands in index.js replaced with real implementations
+
 ## In Progress
 None
 
 ## Next Steps
-1. Phase 4: Scenario C — upgrade command for existing workflow installations
-2. Phase 5: status, backup, restore, diff commands
+All 6 commands are now functional — no more placeholder messages.
 
 ## Blockers
 None
@@ -60,4 +71,4 @@ None
 - The project should use its own workflow patterns where possible
 - Reference docs/spec/SPEC.md for all design decisions
 - Reference docs/reference/workflow-reference.docx for the full workflow guide
-- 93 tests passing (9 test files), lint clean as of Phase 3 completion
+- 134 tests passing (16 test files), lint clean as of Phase 4 completion

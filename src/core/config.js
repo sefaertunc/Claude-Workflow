@@ -17,6 +17,7 @@ export function createWorkflowMeta({
   optionalAgents,
   fileHashes = {},
   version,
+  useDocker = false,
 }) {
   const now = new Date().toISOString();
   return {
@@ -27,6 +28,7 @@ export function createWorkflowMeta({
     techStack,
     universalAgents,
     optionalAgents,
+    useDocker,
     fileHashes,
   };
 }

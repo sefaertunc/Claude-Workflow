@@ -281,6 +281,7 @@ async function computeAndWriteWorkflowMeta(projectRoot, selections, version) {
     techStack: selections.languages,
     universalAgents: UNIVERSAL_AGENTS,
     optionalAgents: selections.selectedAgents,
+    useDocker: selections.useDocker || false,
     fileHashes,
   });
   await writeWorkflowMeta(projectRoot, meta);

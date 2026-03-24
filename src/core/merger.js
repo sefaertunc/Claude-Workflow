@@ -166,22 +166,7 @@ async function mergeCommands(projectRoot, existingScan, report) {
   }
 }
 
-async function mergeSettingsJson(projectRoot, existingScan, selections, report) {
-  const { languages, useDocker } = selections;
-  const { settingsStr, settingsObject: workflowSettings } = await buildSettingsJson(
-    languages,
-    useDocker
-  );
-
-  if (!existingScan.hasSettingsJson) {
-    // No existing settings — create fresh
-    await writeFile(path.join(projectRoot, '.claude', 'settings.json'), settingsStr);
-    report.added.permissions = workflowSettings.permissions?.allow?.length || 0;
-    report.added.hooks = countHooks(workflowSettings.hooks);
-    return;
-  }
-
-  // Existing settings — merge
+export async function mergeSettingsPermissionsAndHooks(projectRoot, workflowSettings, report) {
   const existingRaw = await readFile(path.join(projectRoot, '.claude', 'settings.json'));
   const existing = JSON.parse(existingRaw);
 
@@ -246,6 +231,24 @@ async function mergeSettingsJson(projectRoot, existingScan, selections, report) 
     path.join(projectRoot, '.claude', 'settings.json'),
     JSON.stringify(existing, null, 2)
   );
+}
+
+async function mergeSettingsJson(projectRoot, existingScan, selections, report) {
+  const { languages, useDocker } = selections;
+  const { settingsStr, settingsObject: workflowSettings } = await buildSettingsJson(
+    languages,
+    useDocker
+  );
+
+  if (!existingScan.hasSettingsJson) {
+    // No existing settings — create fresh
+    await writeFile(path.join(projectRoot, '.claude', 'settings.json'), settingsStr);
+    report.added.permissions = workflowSettings.permissions?.allow?.length || 0;
+    report.added.hooks = countHooks(workflowSettings.hooks);
+    return;
+  }
+
+  await mergeSettingsPermissionsAndHooks(projectRoot, workflowSettings, report);
 }
 
 function countHooks(hooks) {
