@@ -356,6 +356,7 @@ async function scaffoldFresh(projectRoot, selections, variables, settingsStr, ve
 
     const progressPath = path.join(projectRoot, 'docs', 'spec', 'PROGRESS.md');
     const specPath = path.join(projectRoot, 'docs', 'spec', 'SPEC.md');
+    const skipped = { progressMd: false, specMd: false };
 
     if (!(await fileExists(progressPath))) {
       await scaffoldFile(
@@ -364,11 +365,15 @@ async function scaffoldFresh(projectRoot, selections, variables, settingsStr, ve
         variables,
         projectRoot
       );
+    } else {
+      skipped.progressMd = true;
     }
     if (!(await fileExists(specPath))) {
       const primaryType = projectTypes[0];
       const specTemplate = SPEC_MD_TEMPLATE_MAP[primaryType] || 'spec-md.md';
       await scaffoldFile(specTemplate, path.join('docs', 'spec', 'SPEC.md'), variables, projectRoot);
+    } else {
+      skipped.specMd = true;
     }
     spinner.text = 'Created docs/spec/';
 
@@ -376,6 +381,7 @@ async function scaffoldFresh(projectRoot, selections, variables, settingsStr, ve
     spinner.text = 'Created .claude/workflow-meta.json';
 
     spinner.succeed('Workflow installed successfully!');
+    return skipped;
   } catch (err) {
     spinner.fail('Failed to create workflow structure');
     display.error(err.message);
@@ -383,7 +389,7 @@ async function scaffoldFresh(projectRoot, selections, variables, settingsStr, ve
   }
 }
 
-function displayFreshSuccess(selections) {
+function displayFreshSuccess(selections, skipped) {
   display.newline();
   display.success('CLAUDE.md');
   display.success('.claude/settings.json');
@@ -396,8 +402,16 @@ function displayFreshSuccess(selections) {
     `.claude/skills/ (${UNIVERSAL_SKILLS.length} universal + ${TEMPLATE_SKILLS.length} templates)`
   );
   display.success('.mcp.json');
-  display.success('docs/spec/PROGRESS.md');
-  display.success('docs/spec/SPEC.md');
+  if (skipped.progressMd) {
+    display.dim('  docs/spec/PROGRESS.md — already exists, skipped');
+  } else {
+    display.success('docs/spec/PROGRESS.md');
+  }
+  if (skipped.specMd) {
+    display.dim('  docs/spec/SPEC.md — already exists, skipped');
+  } else {
+    display.success('docs/spec/SPEC.md');
+  }
   display.newline();
   display.info('What to do next:');
   display.newline();
@@ -595,8 +609,8 @@ export async function initCommand() {
   // Step 6: Branch by scenario
   if (scenario === 'fresh') {
     const { settingsStr } = await buildSettingsJson(selections.languages, selections.useDocker);
-    await scaffoldFresh(projectRoot, selections, variables, settingsStr, version);
-    displayFreshSuccess(selections);
+    const skipped = await scaffoldFresh(projectRoot, selections, variables, settingsStr, version);
+    displayFreshSuccess(selections, skipped);
   } else {
     // Scenario B: merge
     const spinner = ora('Merging workflow...').start();
