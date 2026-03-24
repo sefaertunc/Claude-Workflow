@@ -8,7 +8,7 @@ import {
   readWorkflowMeta,
   writeWorkflowMeta,
 } from '../core/config.js';
-import { writeFile, listFilesRecursive } from '../utils/file.js';
+import { fileExists, writeFile, listFilesRecursive } from '../utils/file.js';
 import { hashFile } from '../utils/hash.js';
 import * as display from '../utils/display.js';
 import { promptProjectType } from '../prompts/project-type.js';
@@ -354,15 +354,22 @@ async function scaffoldFresh(projectRoot, selections, variables, settingsStr, ve
     await scaffoldFile('mcp-json.json', '.mcp.json', {}, projectRoot);
     spinner.text = 'Created .mcp.json';
 
-    await scaffoldFile(
-      'progress-md.md',
-      path.join('docs', 'spec', 'PROGRESS.md'),
-      variables,
-      projectRoot
-    );
-    const primaryType = projectTypes[0];
-    const specTemplate = SPEC_MD_TEMPLATE_MAP[primaryType] || 'spec-md.md';
-    await scaffoldFile(specTemplate, path.join('docs', 'spec', 'SPEC.md'), variables, projectRoot);
+    const progressPath = path.join(projectRoot, 'docs', 'spec', 'PROGRESS.md');
+    const specPath = path.join(projectRoot, 'docs', 'spec', 'SPEC.md');
+
+    if (!(await fileExists(progressPath))) {
+      await scaffoldFile(
+        'progress-md.md',
+        path.join('docs', 'spec', 'PROGRESS.md'),
+        variables,
+        projectRoot
+      );
+    }
+    if (!(await fileExists(specPath))) {
+      const primaryType = projectTypes[0];
+      const specTemplate = SPEC_MD_TEMPLATE_MAP[primaryType] || 'spec-md.md';
+      await scaffoldFile(specTemplate, path.join('docs', 'spec', 'SPEC.md'), variables, projectRoot);
+    }
     spinner.text = 'Created docs/spec/';
 
     await computeAndWriteWorkflowMeta(projectRoot, selections, version);
