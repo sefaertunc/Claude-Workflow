@@ -191,6 +191,9 @@ export async function upgradeCommand() {
       display.dim(`  New:         ${categories.newFiles.length} files added`);
     }
     display.dim(`  Unchanged:   ${categories.unchanged.length} files`);
+    if (categories.modified.length > 0) {
+      display.dim(`  Customized:  ${categories.modified.length} files (no updates needed)`);
+    }
     display.newline();
     display.dim(`  Backup: ${path.basename(backupDir)}/`);
 
