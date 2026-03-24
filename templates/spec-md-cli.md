@@ -6,7 +6,7 @@
 ## Tech Stack
 | Layer        | Technology                        |
 |--------------|-----------------------------------|
-| Language     | {tech_stack_filled_during_init}   |
+| Language     | {tech_stack_table}                |{docker_row}
 | CLI Framework| [e.g. Commander.js, Click, Cobra] |
 | Output       | [e.g. Chalk, Rich, colored]      |
 | Testing      | [e.g. Vitest, pytest]            |

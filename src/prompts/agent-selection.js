@@ -33,7 +33,7 @@ export async function promptAgentSelection(projectTypes) {
       name: 'selectedCategories',
       message: 'Which agent categories do you need? (space to toggle)',
       choices: categoryNames.map((cat) => ({
-        name: `${cat.padEnd(16)}— ${AGENT_CATEGORIES[cat].description}`,
+        name: `${cat} — ${AGENT_CATEGORIES[cat].description}`,
         value: cat,
         checked: preSelectedCategories.has(cat),
       })),
@@ -51,13 +51,47 @@ export async function promptAgentSelection(projectTypes) {
         name: 'selectedAgents',
         message: `Fine-tune ${cat} agents? (space to toggle, enter to accept defaults)`,
         choices: agentNames.map((name) => ({
-          name: `${name.padEnd(24)}— ${AGENT_CATALOG[name].description}`,
+          name: `${name} — ${AGENT_CATALOG[name].description}`,
           value: name,
           checked: true,
         })),
       },
     ]);
     selected.push(...selectedAgents);
+  }
+
+  // Step 3: Offer unselected categories
+  const unselectedCategories = categoryNames.filter((cat) => !selectedCategories.includes(cat));
+
+  if (unselectedCategories.length > 0) {
+    const { additionalCategories } = await inquirer.prompt([
+      {
+        type: 'checkbox',
+        name: 'additionalCategories',
+        message: 'Any other agent categories you\'d like to add? (space to toggle, enter to skip)',
+        choices: unselectedCategories.map((cat) => ({
+          name: `${cat} — ${AGENT_CATEGORIES[cat].description}`,
+          value: cat,
+        })),
+      },
+    ]);
+
+    for (const cat of additionalCategories) {
+      const agentNames = AGENT_CATEGORIES[cat].agents;
+      const { selectedAgents } = await inquirer.prompt([
+        {
+          type: 'checkbox',
+          name: 'selectedAgents',
+          message: `Fine-tune ${cat} agents? (space to toggle, enter to accept defaults)`,
+          choices: agentNames.map((name) => ({
+            name: `${name} — ${AGENT_CATALOG[name].description}`,
+            value: name,
+            checked: true,
+          })),
+        },
+      ]);
+      selected.push(...selectedAgents);
+    }
   }
 
   // Deduplicate

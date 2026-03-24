@@ -27,6 +27,50 @@ import {
   SPEC_MD_TEMPLATE_MAP,
 } from '../data/agents.js';
 
+// --- Helper functions ---
+
+function buildCommandsBlock(languages, useDocker) {
+  const lines = ['```bash'];
+  if (languages.includes('python')) {
+    lines.push('# Python');
+    lines.push('python -m pytest                # Run tests');
+    lines.push('ruff check .                    # Lint');
+    lines.push('ruff format .                   # Format');
+  }
+  if (languages.includes('node')) {
+    if (lines.length > 1) lines.push('');
+    lines.push('# Node.js / TypeScript');
+    lines.push('npm test                        # Run tests');
+    lines.push('npx eslint .                    # Lint');
+    lines.push('npx prettier --write .          # Format');
+  }
+  if (languages.includes('rust')) {
+    if (lines.length > 1) lines.push('');
+    lines.push('# Rust');
+    lines.push('cargo test                      # Run tests');
+    lines.push('cargo clippy                    # Lint');
+    lines.push('cargo fmt                       # Format');
+  }
+  if (languages.includes('go')) {
+    if (lines.length > 1) lines.push('');
+    lines.push('# Go');
+    lines.push('go test ./...                   # Run tests');
+    lines.push('golangci-lint run               # Lint');
+    lines.push('gofmt -w .                      # Format');
+  }
+  if (useDocker) {
+    if (lines.length > 1) lines.push('');
+    lines.push('# Docker');
+    lines.push('docker compose up -d            # Start services');
+    lines.push('docker compose down             # Stop services');
+  }
+  if (lines.length === 1) {
+    lines.push('# Add your project-specific commands here');
+  }
+  lines.push('```');
+  return lines.join('\n');
+}
+
 // --- Step runner functions ---
 
 async function runProjectInfo(selections) {
@@ -239,18 +283,25 @@ export async function initCommand() {
   if (useDocker) techStackLines.push('- Docker');
   const techStackText = techStackLines.join('\n');
 
-  const commandsText = [
-    '```bash',
-    '# Add your project-specific commands here',
-    '# Example:',
-    '#   npm start          # Start dev server',
-    '#   npm test           # Run tests',
-    '#   npm run build      # Build for production',
-    '```',
-  ].join('\n');
+  // Comma-separated format for SPEC.md table cells (no Docker — it gets its own row)
+  const techStackTableItems = languages
+    .filter((l) => l !== 'other')
+    .map((l) => {
+      const entry = TECH_STACKS.find((s) => s.value === l);
+      return entry ? entry.name : l;
+    });
+  if (languages.includes('other') && techStackTableItems.length === 0) {
+    techStackTableItems.push('Not specified');
+  }
+  const techStackTable = techStackTableItems.join(', ');
+  const dockerRow = useDocker
+    ? '\n| Containers   | Docker                            |'
+    : '';
+
+  const commandsText = buildCommandsBlock(languages, useDocker);
 
   const skillsLines = TEMPLATE_SKILLS.map(
-    (s) => `- ${s}.md — Fill in with your project specifics`
+    (s) => `- ${s}.md — Run /setup to fill automatically`
   );
   const skillsText = skillsLines.join('\n');
 
@@ -259,6 +310,8 @@ export async function initCommand() {
     description: description || 'A project scaffolded with Claude Workflow',
     tech_stack_filled_during_init: techStackText,
     tech_stack: techStackText,
+    tech_stack_table: techStackTable,
+    docker_row: dockerRow,
     commands_filled_during_init: commandsText,
     project_specific_skills: skillsText,
     timestamp: new Date().toISOString(),
@@ -393,10 +446,15 @@ export async function initCommand() {
   display.success('docs/spec/PROGRESS.md');
   display.success('docs/spec/SPEC.md');
   display.newline();
-  display.info('Next steps:');
-  display.dim('1. Review and customize CLAUDE.md for your project');
-  display.dim('2. Run /setup to fill in project-specific content');
-  display.dim('3. Write your SPEC.md with project requirements');
-  display.dim('4. Start a Claude Code session');
+  display.info('What to do next:');
+  display.newline();
+  display.dim('  1. Start a Claude Code session in this project');
+  display.dim('  2. Run /setup — Claude will interview you about your project');
+  display.dim('     and fill in all configuration files automatically');
+  display.dim('  3. Review CLAUDE.md and adjust if needed');
+  display.dim('  4. Start building!');
+  display.newline();
+  display.info('Tip: The /setup command is the fastest way to configure');
+  display.dim('  your project. It takes about 5 minutes.');
   display.newline();
 }

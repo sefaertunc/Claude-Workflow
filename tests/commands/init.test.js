@@ -36,7 +36,8 @@ function setupDefaultMocks() {
     { selectedCategories: ['Quality', 'Documentation'] },            // 5: agent categories
     { selectedAgents: ['bug-fixer'] },                               // 6: fine-tune Quality
     { selectedAgents: ['doc-writer'] },                              // 7: fine-tune Documentation
-    { confirmation: 'yes' },                                         // 8: confirmation
+    { additionalCategories: [] },                                    // 8: unselected categories offer
+    { confirmation: 'yes' },                                         // 9: confirmation
   ];
   let callCount = 0;
   inquirer.prompt.mockImplementation(() => {
@@ -171,6 +172,7 @@ describe('init command', () => {
       { useDocker: true },
       { selectedCategories: ['Quality'] },
       { selectedAgents: ['bug-fixer'] },
+      { additionalCategories: [] },
       { confirmation: 'yes' },
     ];
     let i = 0;
@@ -193,6 +195,7 @@ describe('init command', () => {
       { languages: ['python', 'node'] },
       { useDocker: false },
       { selectedCategories: [] },
+      { additionalCategories: [] },
       { confirmation: 'yes' },
     ];
     let i = 0;
@@ -211,6 +214,7 @@ describe('init command', () => {
       { languages: ['python', 'go'] },
       { useDocker: false },
       { selectedCategories: [] },
+      { additionalCategories: [] },
       { confirmation: 'yes' },
     ];
     let i = 0;
@@ -220,5 +224,43 @@ describe('init command', () => {
     const content = await fs.readFile(path.join(tmpDir, '.claude', 'workflow-meta.json'), 'utf-8');
     const meta = JSON.parse(content);
     expect(meta.techStack).toEqual(['python', 'go']);
+  });
+
+  it('generates stack-specific commands in CLAUDE.md', async () => {
+    await initCommand();
+    const content = await fs.readFile(path.join(tmpDir, 'CLAUDE.md'), 'utf-8');
+    expect(content).toContain('npm test');
+    expect(content).toContain('npx eslint');
+    expect(content).not.toContain('# Add your project-specific commands here');
+  });
+
+  it('uses /setup text for template skills in CLAUDE.md', async () => {
+    await initCommand();
+    const content = await fs.readFile(path.join(tmpDir, 'CLAUDE.md'), 'utf-8');
+    expect(content).toContain('Run /setup to fill automatically');
+    expect(content).not.toContain('Fill in with your project specifics');
+  });
+
+  it('renders SPEC.md tech stack as comma-separated in table', async () => {
+    const responses = [
+      { projectName: 'table-test', description: 'Test' },
+      { projectTypes: ['Backend / API'] },
+      { languages: ['python', 'node'] },
+      { useDocker: true },
+      { selectedCategories: [] },
+      { additionalCategories: [] },
+      { confirmation: 'yes' },
+    ];
+    let i = 0;
+    inquirer.prompt.mockImplementation(() => Promise.resolve(responses[i++] || {}));
+
+    await initCommand();
+    const content = await fs.readFile(path.join(tmpDir, 'docs', 'spec', 'SPEC.md'), 'utf-8');
+    // Should be comma-separated, not bullet list
+    expect(content).toContain('Python, Node.js / TypeScript');
+    expect(content).not.toContain('- Python');
+    // Docker should be in Containers row, not Language row
+    expect(content).toContain('| Containers');
+    expect(content).toContain('Docker');
   });
 });

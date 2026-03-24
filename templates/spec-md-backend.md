@@ -6,7 +6,7 @@
 ## Tech Stack
 | Layer       | Technology                        |
 |-------------|-----------------------------------|
-| Language    | {tech_stack_filled_during_init}   |
+| Language    | {tech_stack_table}                |{docker_row}
 | Framework   | [e.g. Express, FastAPI, Gin]      |
 | Database    | [e.g. PostgreSQL, MongoDB, Redis] |
 | Auth        | [e.g. JWT, API keys, OAuth2]      |

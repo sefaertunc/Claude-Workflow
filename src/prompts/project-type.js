@@ -7,9 +7,10 @@ export async function promptProjectType() {
     {
       type: 'checkbox',
       name: 'projectTypes',
-      message: 'What type of project is this? (space to toggle, enter to confirm)',
+      message:
+        'What type of project is this? (space to toggle, enter to confirm)\n  ℹ Not sure? Pick what\'s closest. You can add/remove agents later.',
       choices: PROJECT_TYPES.map((t) => ({
-        name: `${t.padEnd(28)}— ${PROJECT_TYPE_DESCRIPTIONS[t]}`,
+        name: `${t} — ${PROJECT_TYPE_DESCRIPTIONS[t]}`,
         value: t,
       })),
       validate(answer) {
@@ -21,11 +22,7 @@ export async function promptProjectType() {
     },
   ]);
 
-  display.newline();
-  display.info("Not sure? Pick what's closest. You can add or remove");
-  display.dim('agents later with `claude-workflow upgrade`.');
-
-  // Smart redundancy detection
+  // Smart redundancy detection — confirm prompt if overlap detected
   if (projectTypes.includes('Full-stack web application')) {
     const overlaps = [];
     if (projectTypes.includes('Backend / API')) overlaps.push('Backend / API');
@@ -33,7 +30,18 @@ export async function promptProjectType() {
     if (overlaps.length > 0) {
       display.newline();
       display.warn('"Full-stack web" already includes backend and frontend.');
-      display.dim('You may not need to select those separately.');
+      display.dim('You may not need both.');
+      const { continueAnyway } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'continueAnyway',
+          message: 'Continue anyway?',
+          default: true,
+        },
+      ]);
+      if (!continueAnyway) {
+        return promptProjectType();
+      }
     }
   }
 

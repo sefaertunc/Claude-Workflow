@@ -6,7 +6,7 @@
 ## Tech Stack
 | Layer         | Technology                        |
 |---------------|-----------------------------------|
-| Language      | {tech_stack_filled_during_init}   |
+| Language      | {tech_stack_table}                |{docker_row}
 | Build         | [e.g. tsup, rollup, setuptools]   |
 | Testing       | [e.g. Vitest, pytest, Jest]       |
 | Docs          | [e.g. TypeDoc, Sphinx, JSDoc]     |

@@ -6,7 +6,7 @@
 ## Tech Stack
 | Layer          | Technology                        |
 |----------------|-----------------------------------|
-| Language       | {tech_stack_filled_during_init}   |
+| Language       | {tech_stack_table}                |{docker_row}
 | ML Framework   | [e.g. PyTorch, scikit-learn, TF]  |
 | Data Storage   | [e.g. S3, BigQuery, PostgreSQL]   |
 | Orchestration  | [e.g. Airflow, Prefect, Dagster]  |
