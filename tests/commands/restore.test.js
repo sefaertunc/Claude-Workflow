@@ -7,6 +7,7 @@ import os from 'node:os';
 vi.mock('inquirer', () => ({
   default: {
     prompt: vi.fn(),
+    Separator: class Separator {},
   },
 }));
 
@@ -71,6 +72,28 @@ describe('restore command', () => {
 
     const content = await fs.readFile(path.join(tmpDir, 'CLAUDE.md'), 'utf-8');
     expect(content).toBe('# Original');
+  });
+
+  it('cancels when user selects cancel option', async () => {
+    // Create backup
+    await fs.ensureDir(path.join(tmpDir, '.claude'));
+    await fs.writeFile(path.join(tmpDir, 'CLAUDE.md'), '# Original');
+    await createBackup(tmpDir);
+
+    // Modify
+    await fs.writeFile(path.join(tmpDir, 'CLAUDE.md'), '# Modified');
+
+    // Mock: select cancel
+    inquirer.prompt.mockResolvedValueOnce({ selected: '__cancel__' });
+
+    await restoreCommand();
+
+    // Should only have called prompt once (no confirmation prompt)
+    expect(inquirer.prompt).toHaveBeenCalledTimes(1);
+
+    // File should still be modified
+    const content = await fs.readFile(path.join(tmpDir, 'CLAUDE.md'), 'utf-8');
+    expect(content).toBe('# Modified');
   });
 
   it('cancels when user declines confirmation', async () => {

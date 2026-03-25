@@ -22,6 +22,8 @@ export async function restoreCommand() {
     name: `${path.basename(b.path)} (${relativeTime(b.dateString)})`,
     value: i,
   }));
+  choices.push(new inquirer.Separator());
+  choices.push({ name: '← Cancel', value: '__cancel__' });
 
   const { selected } = await inquirer.prompt([
     {
@@ -31,6 +33,11 @@ export async function restoreCommand() {
       choices,
     },
   ]);
+
+  if (selected === '__cancel__') {
+    display.info('Restore cancelled.');
+    return;
+  }
 
   const backup = backups[selected];
 
