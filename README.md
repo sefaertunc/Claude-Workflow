@@ -4,7 +4,6 @@
 
 [![npm version](https://img.shields.io/npm/v/worclaude.svg)](https://www.npmjs.com/package/worclaude)
 [![license](https://img.shields.io/npm/l/worclaude.svg)](LICENSE)
-[![tests](https://img.shields.io/badge/tests-135%2B%20passing-brightgreen)]()
 
 <!-- GIF goes here once recorded -->
 <!-- ![worclaude init demo](docs/public/demo.gif) -->
