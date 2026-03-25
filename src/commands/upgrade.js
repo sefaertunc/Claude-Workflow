@@ -14,17 +14,10 @@ import { buildSettingsJson, mergeSettingsPermissionsAndHooks } from '../core/mer
 import { readTemplate } from '../core/scaffolder.js';
 import { hashFile } from '../utils/hash.js';
 import { writeFile, fileExists, listFilesRecursive } from '../utils/file.js';
+import { getLatestNpmVersion } from '../utils/npm.js';
 import * as display from '../utils/display.js';
 
-async function getLatestNpmVersion() {
-  try {
-    return execSync('npm view worclaude version', { encoding: 'utf-8' }).trim();
-  } catch {
-    return null;
-  }
-}
-
-async function selfUpdate(latestVersion) {
+function selfUpdate(latestVersion) {
   const spinner = ora(`Updating worclaude to v${latestVersion}...`).start();
   try {
     execSync('npm install -g worclaude@latest', { encoding: 'utf-8', stdio: 'pipe' });

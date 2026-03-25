@@ -4,9 +4,15 @@ import path from 'node:path';
 import os from 'node:os';
 import { hashContent } from '../../src/utils/hash.js';
 
+// Mock npm utility to prevent real registry calls
+vi.mock('../../src/utils/npm.js', () => ({
+  getLatestNpmVersion: vi.fn(() => null),
+}));
+
 // Suppress console output
 vi.spyOn(console, 'log').mockImplementation(() => {});
 
+import { getLatestNpmVersion } from '../../src/utils/npm.js';
 import { statusCommand } from '../../src/commands/status.js';
 
 describe('status command', () => {
@@ -104,6 +110,89 @@ describe('status command', () => {
 
     const allOutput = console.log.mock.calls.map((c) => c.join(' ')).join('\n');
     expect(allOutput).toContain('skills/testing.md');
+  });
+
+  it('shows up to date when npm version matches CLI version', async () => {
+    const pkg = JSON.parse(
+      await fs.readFile(
+        path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'package.json'),
+        'utf-8'
+      )
+    );
+    getLatestNpmVersion.mockReturnValue(pkg.version);
+
+    const meta = {
+      version: pkg.version,
+      installedAt: '2026-03-24T12:00:00.000Z',
+      lastUpdated: '2026-03-24T12:00:00.000Z',
+      projectTypes: [],
+      techStack: [],
+      universalAgents: [],
+      optionalAgents: [],
+      fileHashes: {},
+    };
+
+    await fs.ensureDir(path.join(tmpDir, '.claude'));
+    await fs.writeFile(
+      path.join(tmpDir, '.claude', 'workflow-meta.json'),
+      JSON.stringify(meta, null, 2)
+    );
+
+    await statusCommand();
+    const allOutput = console.log.mock.calls.map((c) => c.join(' ')).join('\n');
+    expect(allOutput).toContain('up to date');
+  });
+
+  it('shows update available when npm has newer version', async () => {
+    getLatestNpmVersion.mockReturnValue('9.9.9');
+
+    const meta = {
+      version: '1.0.0',
+      installedAt: '2026-03-24T12:00:00.000Z',
+      lastUpdated: '2026-03-24T12:00:00.000Z',
+      projectTypes: [],
+      techStack: [],
+      universalAgents: [],
+      optionalAgents: [],
+      fileHashes: {},
+    };
+
+    await fs.ensureDir(path.join(tmpDir, '.claude'));
+    await fs.writeFile(
+      path.join(tmpDir, '.claude', 'workflow-meta.json'),
+      JSON.stringify(meta, null, 2)
+    );
+
+    await statusCommand();
+    const allOutput = console.log.mock.calls.map((c) => c.join(' ')).join('\n');
+    expect(allOutput).toContain('update available');
+    expect(allOutput).toContain('9.9.9');
+  });
+
+  it('shows version without status when offline', async () => {
+    getLatestNpmVersion.mockReturnValue(null);
+
+    const meta = {
+      version: '1.0.0',
+      installedAt: '2026-03-24T12:00:00.000Z',
+      lastUpdated: '2026-03-24T12:00:00.000Z',
+      projectTypes: [],
+      techStack: [],
+      universalAgents: [],
+      optionalAgents: [],
+      fileHashes: {},
+    };
+
+    await fs.ensureDir(path.join(tmpDir, '.claude'));
+    await fs.writeFile(
+      path.join(tmpDir, '.claude', 'workflow-meta.json'),
+      JSON.stringify(meta, null, 2)
+    );
+
+    await statusCommand();
+    const allOutput = console.log.mock.calls.map((c) => c.join(' ')).join('\n');
+    expect(allOutput).not.toContain('up to date');
+    expect(allOutput).not.toContain('update available');
   });
 
   it('detects workflow-ref.md files as pending review', async () => {

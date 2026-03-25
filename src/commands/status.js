@@ -1,7 +1,8 @@
 import path from 'node:path';
-import { readWorkflowMeta, workflowMetaExists } from '../core/config.js';
+import { readWorkflowMeta, workflowMetaExists, getPackageVersion } from '../core/config.js';
 import { hashFile } from '../utils/hash.js';
 import { fileExists, readFile, listFilesRecursive } from '../utils/file.js';
+import { getLatestNpmVersion } from '../utils/npm.js';
 import { TECH_STACKS } from '../data/agents.js';
 import * as display from '../utils/display.js';
 
@@ -28,9 +29,17 @@ export async function statusCommand() {
   display.sectionHeader('WORCLAUDE STATUS');
 
   // Version
-  display.barLine(
-    `${'Version'.padEnd(11)}${display.green(`v${meta.version}`)} ${display.dimColor('(up to date)')}`
-  );
+  const cliVersion = await getPackageVersion();
+  const latestVersion = getLatestNpmVersion();
+
+  let versionSuffix = '';
+  if (latestVersion && latestVersion !== cliVersion) {
+    versionSuffix = ` ${display.yellow(`(update available: v${latestVersion})`)}`;
+  } else if (latestVersion) {
+    versionSuffix = ` ${display.dimColor('(up to date)')}`;
+  }
+
+  display.barLine(`${'Version'.padEnd(11)}${display.green(`v${meta.version}`)}${versionSuffix}`);
 
   // Project info
   const projectTypes = meta.projectTypes || [];

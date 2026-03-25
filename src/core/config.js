@@ -1,11 +1,16 @@
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { readFile, writeFile, fileExists } from '../utils/file.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const pkgPath = path.resolve(__dirname, '..', '..', 'package.json');
+
+export function getPackageVersionSync() {
+  return JSON.parse(readFileSync(pkgPath, 'utf-8')).version;
+}
 
 export async function getPackageVersion() {
-  const pkgPath = path.resolve(__dirname, '..', '..', 'package.json');
   const content = await readFile(pkgPath);
   return JSON.parse(content).version;
 }

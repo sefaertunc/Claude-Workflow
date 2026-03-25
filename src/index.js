@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import { getPackageVersionSync } from './core/config.js';
 import { initCommand } from './commands/init.js';
 import { upgradeCommand } from './commands/upgrade.js';
 import { statusCommand } from './commands/status.js';
@@ -12,7 +13,7 @@ const program = new Command();
 
 program
   .name('worclaude')
-  .version('1.0.0')
+  .version(getPackageVersionSync())
   .description('Scaffold a comprehensive Claude Code workflow into any project');
 
 program.showSuggestionAfterError(true);
