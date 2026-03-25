@@ -7,7 +7,7 @@ import { AGENT_REGISTRY } from '../data/agent-registry.js';
  * @param {string[]} projectTypes - e.g. ['Backend / API', 'Frontend / UI']
  * @returns {string} - complete markdown content for agent-routing.md
  */
-export function buildAgentRoutingSkill(selectedAgentNames, projectTypes) {
+export function buildAgentRoutingSkill(selectedAgentNames, _projectTypes) {
   const allAgents = [...UNIVERSAL_AGENTS, ...selectedAgentNames];
 
   const automaticAgents = [];
