@@ -342,6 +342,67 @@ describe('merger', () => {
       expect(await fs.pathExists(path.join(tmpDir, 'CLAUDE.md'))).toBe(true);
     });
 
+    it('creates agent-routing.md during merge', async () => {
+      const scan = {
+        hasClaudeDir: true,
+        hasClaudeMd: false,
+        claudeMdLineCount: 0,
+        hasSettingsJson: false,
+        hasMcpJson: false,
+        existingSkills: [],
+        existingAgents: [],
+        existingCommands: [],
+        hasProgressMd: false,
+        hasSpecMd: false,
+      };
+
+      const report = await performMerge(tmpDir, scan, baseSelections, baseVariables);
+      expect(report.added.skills).toContain('agent-routing.md');
+
+      const routingPath = path.join(tmpDir, '.claude', 'skills', 'agent-routing.md');
+      expect(await fs.pathExists(routingPath)).toBe(true);
+      const content = await fs.readFile(routingPath, 'utf-8');
+      expect(content).toContain('# Agent Routing Guide');
+      expect(content).toContain('bug-fixer');
+    });
+
+    it('saves agent-routing.md as .workflow-ref.md when conflict exists', async () => {
+      await fs.ensureDir(path.join(tmpDir, '.claude', 'skills'));
+      await fs.writeFile(
+        path.join(tmpDir, '.claude', 'skills', 'agent-routing.md'),
+        '# My custom routing'
+      );
+
+      const scan = {
+        hasClaudeDir: true,
+        hasClaudeMd: false,
+        claudeMdLineCount: 0,
+        hasSettingsJson: false,
+        hasMcpJson: false,
+        existingSkills: ['agent-routing.md'],
+        existingAgents: [],
+        existingCommands: [],
+        hasProgressMd: false,
+        hasSpecMd: false,
+      };
+
+      const report = await performMerge(tmpDir, scan, baseSelections, baseVariables);
+      expect(report.conflicts.skills).toContain('agent-routing.md');
+
+      // Original preserved
+      const original = await fs.readFile(
+        path.join(tmpDir, '.claude', 'skills', 'agent-routing.md'),
+        'utf-8'
+      );
+      expect(original).toBe('# My custom routing');
+
+      // .workflow-ref.md created
+      const refPath = path.join(tmpDir, '.claude', 'skills', 'agent-routing.workflow-ref.md');
+      expect(await fs.pathExists(refPath)).toBe(true);
+      const refContent = await fs.readFile(refPath, 'utf-8');
+      expect(refContent).toContain('# Agent Routing Guide');
+    });
+
     it('generates suggestions file for existing CLAUDE.md (Tier 3)', async () => {
       await fs.writeFile(path.join(tmpDir, 'CLAUDE.md'), '# My Project\n\nDescription.');
 

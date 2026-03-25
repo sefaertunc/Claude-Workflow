@@ -20,11 +20,12 @@ See `.claude/skills/` — load only what's relevant:
 - review-and-handoff.md — Session endings
 - verification.md — How to verify work
 - testing.md — Test philosophy and patterns
+- agent-routing.md — When and how to use each installed agent (READ EVERY SESSION)
 {project_specific_skills}
 
 ## Session Protocol
-**Start:** Read PROGRESS.md. Read active implementation prompt if any.
-**During:** One task at a time. Commit after each. Use subagents for side work.
+**Start:** Read PROGRESS.md → Read `.claude/skills/agent-routing.md` → Read active implementation prompt if any.
+**During:** One task at a time. Commit after each. Use subagents per routing guide.
 **End:** Update PROGRESS.md. Write handoff if ending mid-task.
 
 ## Critical Rules

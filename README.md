@@ -10,7 +10,7 @@
 
 [Full Documentation](https://sefaertunc.github.io/Worclaude/) · [Interactive Demo](https://sefaertunc.github.io/Worclaude/demo/) · [npm](https://www.npmjs.com/package/worclaude)
 
-Worclaude scaffolds a complete Claude Code workflow into any project in seconds. It implements all [53 tips by Boris Cherny](https://www.howborisusesclaudecode.com/) — the creator of Claude Code at Anthropic — as a reusable, upgradable scaffold. One `init` command gives you 23 agents, 10 slash commands, 12 skills, hooks, permissions, and a CLAUDE.md template tuned for your tech stack. Whether you're starting fresh or adding structure to an existing project, Worclaude handles the setup so you can focus on building.
+Worclaude scaffolds a complete Claude Code workflow into any project in seconds. It implements all [53 tips by Boris Cherny](https://www.howborisusesclaudecode.com/) — the creator of Claude Code at Anthropic — as a reusable, upgradable scaffold. One `init` command gives you 23 agents, 10 slash commands, 13 skills, hooks, permissions, and a CLAUDE.md template tuned for your tech stack. Whether you're starting fresh or adding structure to an existing project, Worclaude handles the setup so you can focus on building.
 
 ---
 
@@ -26,10 +26,11 @@ Worclaude scaffolds a complete Claude Code workflow into any project in seconds.
 **Slash Commands (10)**
 `/start` `/end` `/commit-push-pr` `/review-plan` `/techdebt` `/verify` `/compact-safe` `/status` `/update-claude-md` `/setup`
 
-**Skills (12)**
+**Skills (13)**
 
 - 9 universal knowledge files (testing, git conventions, context management, and more)
 - 3 project-specific templates filled in by `/setup`
+- 1 generated agent routing guide (dynamically built from your agent selection)
 
 **Hooks**
 

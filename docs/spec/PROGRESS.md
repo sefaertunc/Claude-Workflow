@@ -3,7 +3,7 @@
 ## Current Status
 
 **Phase:** All phases complete — published on npm as `worclaude`
-**Version:** 1.2.8
+**Version:** 1.3.0
 **Last Updated:** 2026-03-25
 
 ## Completed
@@ -101,16 +101,22 @@
   - [x] `getPackageVersionSync()` added for Commander.js synchronous version display
   - [x] Fix: status no longer says "(up to date)" when workflow version is behind CLI version
   - [x] Fix: self-update EACCES error shows clean "Try: sudo npm install -g" instead of raw npm error dump
+  - [x] Dynamic agent-routing.md generation: builds a comprehensive routing guide during init based on selected agents
+    - [x] Agent registry (src/data/agent-registry.js): routing metadata for all 23 agents
+    - [x] Generator (src/generators/agent-routing.js): buildAgentRoutingSkill() produces markdown dynamically
+    - [x] Integrated into Scenario A (scaffoldFresh) and Scenario B (mergeSkills) with conflict handling
+    - [x] CLAUDE.md template updated: Session Protocol reads agent-routing.md on start
+    - [x] 17 new tests (13 unit + 4 integration)
 
 ## Stats
 
 - 6 CLI commands: init, upgrade, status, backup, restore, diff
 - 5 universal agents + 18 optional agents (6 categories)
 - 10 slash commands
-- 9 universal skills + 3 template skills
+- 9 universal skills + 3 template skills + 1 generated skill (agent-routing)
 - 8 SPEC.md template variants (1 default + 7 project-type-specific)
 - 16 tech stack language options with per-language settings templates
-- 149 tests across 17 test files
+- 166 tests across 18 test files
 - 3 scenarios: fresh, existing, upgrade
 
 ## Notes

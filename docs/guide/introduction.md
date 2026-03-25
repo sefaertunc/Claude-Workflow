@@ -28,9 +28,9 @@ Agents are specialized Claude instances, each with a specific model and purpose.
 
 On top of these, you choose from 18 **optional agents** across 6 categories (Backend, Frontend, DevOps, Quality, Documentation, Data/AI). Worclaude recommends agents based on your project type, so you do not have to guess.
 
-### Skills (12 total)
+### Skills (13 total)
 
-Skills are knowledge files that Claude loads on demand. They teach Claude how your project works without bloating the main context. You get 9 **universal skills** covering context management, git conventions, planning, session handoffs, prompt engineering, verification, testing, CLAUDE.md maintenance, and subagent usage. You also get 3 **template skills** (backend-conventions, frontend-design-system, project-patterns) that serve as placeholders for your project-specific details.
+Skills are knowledge files that Claude loads on demand. They teach Claude how your project works without bloating the main context. You get 9 **universal skills** covering context management, git conventions, planning, session handoffs, prompt engineering, verification, testing, CLAUDE.md maintenance, and subagent usage. You also get 3 **template skills** (backend-conventions, frontend-design-system, project-patterns) that serve as placeholders for your project-specific details. Finally, you get 1 **generated skill** — `agent-routing.md` — a dynamic routing guide that tells Claude exactly when and how to use each installed agent, built from your specific agent selections.
 
 ### Slash Commands (10 total)
 

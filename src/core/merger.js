@@ -18,6 +18,7 @@ import {
   NOTIFICATION_COMMANDS,
   SPEC_MD_TEMPLATE_MAP,
 } from '../data/agents.js';
+import { buildAgentRoutingSkill } from '../generators/agent-routing.js';
 import * as display from '../utils/display.js';
 
 // --- Settings builder (shared with Scenario A) ---
@@ -95,7 +96,7 @@ function parseUserJson(raw, filename) {
 
 // --- Sub-merge operations ---
 
-async function mergeSkills(projectRoot, existingScan, variables, report) {
+async function mergeSkills(projectRoot, existingScan, variables, report, selections) {
   const allSkills = [
     ...UNIVERSAL_SKILLS.map((s) => ({
       name: s,
@@ -127,6 +128,25 @@ async function mergeSkills(projectRoot, existingScan, variables, report) {
       await scaffoldFile(skill.templatePath, path.join(destDir, filename), skill.vars, projectRoot);
       report.added.skills.push(filename);
     }
+  }
+
+  // Generated skill: agent-routing.md
+  const routingFilename = 'agent-routing.md';
+  const skillsDir = path.join('.claude', 'skills');
+  const routingContent = buildAgentRoutingSkill(
+    selections.selectedAgents,
+    selections.projectTypes
+  );
+
+  if (existingScan.existingSkills.includes(routingFilename)) {
+    await writeFile(
+      path.join(projectRoot, skillsDir, 'agent-routing.workflow-ref.md'),
+      routingContent
+    );
+    report.conflicts.skills.push(routingFilename);
+  } else {
+    await writeFile(path.join(projectRoot, skillsDir, routingFilename), routingContent);
+    report.added.skills.push(routingFilename);
   }
 }
 
@@ -395,7 +415,7 @@ export async function performMerge(
     hookConflicts: [],
   };
 
-  await mergeSkills(projectRoot, existingScan, variables, report);
+  await mergeSkills(projectRoot, existingScan, variables, report, selections);
   await mergeAgents(projectRoot, existingScan, selections.selectedAgents, report);
   await mergeCommands(projectRoot, existingScan, report);
 

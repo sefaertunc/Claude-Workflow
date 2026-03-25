@@ -189,7 +189,7 @@ Create all files. Show progress.
   ✓ .claude/workflow-meta.json
   ✓ .claude/agents/ (5 universal + 6 selected)
   ✓ .claude/commands/ (10 universal)
-  ✓ .claude/skills/ (9 universal + 3 templates)
+  ✓ .claude/skills/ (9 universal + 3 templates + 1 generated)
   ✓ .mcp.json
   ✓ docs/spec/PROGRESS.md
   ✓ docs/spec/SPEC.md

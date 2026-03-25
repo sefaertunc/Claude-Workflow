@@ -27,6 +27,7 @@ import {
   CONFIRMATION_STEPS,
   SPEC_MD_TEMPLATE_MAP,
 } from '../data/agents.js';
+import { buildAgentRoutingSkill } from '../generators/agent-routing.js';
 
 // --- Helper functions ---
 
@@ -436,6 +437,13 @@ async function scaffoldFresh(projectRoot, selections, variables, settingsStr, ve
     }
     spinner.text = `Created ${TEMPLATE_SKILLS.length} template skills`;
 
+    const agentRoutingContent = buildAgentRoutingSkill(selectedAgents, projectTypes);
+    await writeFile(
+      path.join(projectRoot, '.claude', 'skills', 'agent-routing.md'),
+      agentRoutingContent
+    );
+    spinner.text = 'Created agent routing guide';
+
     await scaffoldFile('mcp-json.json', '.mcp.json', {}, projectRoot);
     spinner.text = 'Created .mcp.json';
 
@@ -481,7 +489,7 @@ async function scaffoldFresh(projectRoot, selections, variables, settingsStr, ve
 
 function displayFreshSuccess(selections, skipped) {
   const totalAgents = UNIVERSAL_AGENTS.length + selections.selectedAgents.length;
-  const totalSkills = UNIVERSAL_SKILLS.length + TEMPLATE_SKILLS.length;
+  const totalSkills = UNIVERSAL_SKILLS.length + TEMPLATE_SKILLS.length + 1; // +1 for agent-routing.md
 
   display.newline();
   display.success('CLAUDE.md');

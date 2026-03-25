@@ -73,24 +73,25 @@ See `.claude/skills/` — load only what's relevant:
 - review-and-handoff.md — Session endings
 - verification.md — How to verify work
 - testing.md — Test philosophy and patterns
+- agent-routing.md — When and how to use each installed agent (READ EVERY SESSION)
 - backend-conventions.md — Run /setup to fill automatically
 - frontend-design-system.md — Run /setup to fill automatically
 - project-patterns.md — Run /setup to fill automatically
 ````
 
-Lists all 9 universal skills and 3 template skills. The "read on demand, not upfront" instruction tells Claude not to load every skill at session start -- only when the current task needs it. This is the progressive disclosure pattern.
+Lists all 9 universal skills, 1 generated skill (agent-routing), and 3 template skills. The "read on demand, not upfront" instruction tells Claude not to load every skill at session start -- only when the current task needs it. This is the progressive disclosure pattern. The exception is `agent-routing.md`, which is marked "READ EVERY SESSION" because Claude needs to know which agents to use from the start.
 
 ### Session Protocol
 
 ```markdown
 ## Session Protocol
 
-**Start:** Read PROGRESS.md. Read active implementation prompt if any.
-**During:** One task at a time. Commit after each. Use subagents for side work.
+**Start:** Read PROGRESS.md → Read `.claude/skills/agent-routing.md` → Read active implementation prompt if any.
+**During:** One task at a time. Commit after each. Use subagents per routing guide.
 **End:** Update PROGRESS.md. Write handoff if ending mid-task.
 ```
 
-Three-line workflow protocol. Covers the full session lifecycle. Each phase has a corresponding slash command (`/start`, `/end`) and skill file for detailed guidance.
+Three-line workflow protocol. Covers the full session lifecycle. Each phase has a corresponding slash command (`/start`, `/end`) and skill file for detailed guidance. The Start phase now includes reading the agent routing guide so Claude knows which agents to use from the beginning of every session.
 
 ### Critical Rules
 

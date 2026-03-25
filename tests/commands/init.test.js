@@ -134,7 +134,7 @@ describe('init command', () => {
     }
   });
 
-  it('creates all skills', async () => {
+  it('creates all skills including agent-routing', async () => {
     await initCommand();
     const skills = [
       'context-management',
@@ -149,11 +149,38 @@ describe('init command', () => {
       'backend-conventions',
       'frontend-design-system',
       'project-patterns',
+      'agent-routing',
     ];
     for (const skill of skills) {
       const exists = await fs.pathExists(path.join(tmpDir, '.claude', 'skills', `${skill}.md`));
       expect(exists, `${skill}.md should exist`).toBe(true);
     }
+  });
+
+  it('generates agent-routing.md with correct agents', async () => {
+    await initCommand();
+    const content = await fs.readFile(
+      path.join(tmpDir, '.claude', 'skills', 'agent-routing.md'),
+      'utf-8'
+    );
+    // Should contain universal agents
+    expect(content).toContain('plan-reviewer');
+    expect(content).toContain('build-validator');
+    // Should contain selected optional agents
+    expect(content).toContain('bug-fixer');
+    expect(content).toContain('doc-writer');
+    // Should NOT contain unselected agents
+    expect(content).not.toContain('### api-designer');
+    expect(content).not.toContain('### docker-helper');
+    // Should have expected structure
+    expect(content).toContain('# Agent Routing Guide');
+    expect(content).toContain('## Decision Matrix');
+  });
+
+  it('includes agent-routing directive in CLAUDE.md', async () => {
+    await initCommand();
+    const content = await fs.readFile(path.join(tmpDir, 'CLAUDE.md'), 'utf-8');
+    expect(content).toContain('agent-routing.md');
   });
 
   it('creates .mcp.json', async () => {

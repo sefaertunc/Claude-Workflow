@@ -6,7 +6,7 @@ CLAUDE.md contains pointers to each skill so Claude knows they exist. When worki
 
 ## Universal Skills
 
-9 skills installed with every project. These cover workflow mechanics that apply regardless of tech stack.
+9 skills installed with every project. These cover workflow mechanics that apply regardless of tech stack. Additionally, 1 generated skill (`agent-routing.md`) is dynamically built from your agent selections during init.
 
 ### context-management
 
@@ -97,6 +97,24 @@ Explains the self-healing pattern (same mistake twice becomes a rule), the 50-li
 | **When loaded** | Before spawning subagents for testing, code review, or parallel work          |
 
 Covers when subagents help vs when they do not, context hygiene (offloading to keep the main session clean), parallel vs sequential subagents (limit to 2-3 parallel), worktree isolation mechanics, and how to give subagents good instructions. Emphasizes that subagents start with zero context and need explicit instructions.
+
+---
+
+## Generated Skill
+
+1 skill dynamically generated during `worclaude init` based on the user's agent selections.
+
+### agent-routing
+
+|                 |                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------- |
+| **File**        | `.claude/skills/agent-routing.md`                                                           |
+| **Description** | When and how to use each installed agent — decision matrix, triggers, and routing rules      |
+| **When loaded** | At the start of every session (referenced in Session Protocol)                              |
+
+Dynamically generated based on which agents the user selects during `worclaude init`. Contains: a "How Agents Work" overview, automatic trigger agents (spawned without asking), manual trigger agents (spawned on request), a decision matrix mapping situations to agents, and general routing rules. Only includes agents that were actually installed — no noise from unused agents.
+
+Unlike universal and template skills, this file is not copied from a template. It is programmatically assembled by `src/generators/agent-routing.js` using metadata from `src/data/agent-registry.js`.
 
 ---
 
@@ -192,6 +210,7 @@ The `description` field appears in Claude's skill listing, helping it decide whi
   testing.md                  # universal
   claude-md-maintenance.md    # universal
   subagent-usage.md           # universal
+  agent-routing.md            # generated (dynamic, based on agent selection)
   backend-conventions.md      # template
   frontend-design-system.md   # template
   project-patterns.md         # template
