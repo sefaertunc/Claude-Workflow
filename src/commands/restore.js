@@ -11,7 +11,7 @@ export async function restoreCommand() {
 
   const backups = await listBackups(projectRoot);
   if (backups.length === 0) {
-    display.info('No backups found. Run `claude-workflow backup` to create one.');
+    display.info('No backups found. Run `worclaude backup` to create one.');
     return;
   }
 
@@ -91,5 +91,5 @@ export async function restoreCommand() {
   display.info(
     'Note: workflow-meta.json has been restored to its backup state.'
   );
-  display.dim('  Run `claude-workflow upgrade` if you want to update to the latest version.');
+  display.dim('  Run `worclaude upgrade` if you want to update to the latest version.');
 }

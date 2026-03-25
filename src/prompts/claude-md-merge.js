@@ -55,7 +55,7 @@ export function generateWorkflowSuggestions(existingContent, renderedTemplate) {
   const missing = detectMissingSections(existingContent);
 
   const lines = [
-    '# Claude Workflow — Suggested CLAUDE.md Additions',
+    '# Worclaude — Suggested CLAUDE.md Additions',
     '',
     'The following sections are recommended based on the Claude Code',
     'workflow system. Review and merge what\'s useful into your CLAUDE.md.',

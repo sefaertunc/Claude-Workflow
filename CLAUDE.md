@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-claude-workflow — CLI tool that scaffolds a comprehensive Claude Code workflow into any project.
+worclaude — CLI tool that scaffolds a comprehensive Claude Code workflow into any project.
 
 ## Key Files
 - `docs/spec/PROGRESS.md` — Read first every session

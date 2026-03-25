@@ -21,14 +21,14 @@ export async function upgradeCommand() {
   // 1. Check prerequisite
   if (!(await workflowMetaExists(projectRoot))) {
     display.error('No workflow installation found.');
-    display.info('Run `claude-workflow init` to set up the workflow first.');
+    display.info('Run `worclaude init` to set up the workflow first.');
     return;
   }
 
   const meta = await readWorkflowMeta(projectRoot);
   if (!meta) {
     display.error('workflow-meta.json is corrupted or invalid.');
-    display.info('Run `claude-workflow init` to reinstall (a backup will be created first).');
+    display.info('Run `worclaude init` to reinstall (a backup will be created first).');
     return;
   }
 
@@ -45,7 +45,7 @@ export async function upgradeCommand() {
   const categories = await categorizeFiles(projectRoot, meta);
 
   // 4. Preview
-  display.header('Claude Workflow Upgrade');
+  display.header('Worclaude Upgrade');
   display.newline();
   display.dim(`  Current version: ${installedVersion}`);
   display.dim(`  New version:     ${currentVersion}`);

@@ -92,7 +92,7 @@ describe('claude-md-merge', () => {
       ].join('\n');
 
       const suggestions = generateWorkflowSuggestions(existing, rendered);
-      expect(suggestions).toContain('Claude Workflow — Suggested');
+      expect(suggestions).toContain('Worclaude — Suggested');
       expect(suggestions).toContain('Suggested: Key Files');
       expect(suggestions).toContain('Suggested: Session Protocol');
       expect(suggestions).toContain('Suggested: Critical Rules');

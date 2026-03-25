@@ -6,19 +6,19 @@ export async function diffCommand() {
   const projectRoot = process.cwd();
 
   if (!(await workflowMetaExists(projectRoot))) {
-    display.info('Workflow is not installed. Run `claude-workflow init` to set up.');
+    display.info('Workflow is not installed. Run `worclaude init` to set up.');
     return;
   }
 
   const meta = await readWorkflowMeta(projectRoot);
   if (!meta) {
-    display.error('workflow-meta.json is corrupted. Run `claude-workflow init` to reinstall.');
+    display.error('workflow-meta.json is corrupted. Run `worclaude init` to reinstall.');
     return;
   }
 
   const categories = await categorizeFiles(projectRoot, meta);
 
-  display.header('Claude Workflow Diff');
+  display.header('Worclaude Diff');
   display.newline();
   display.dim(`  Comparing current setup to workflow v${meta.version}:`);
   display.newline();
@@ -71,6 +71,6 @@ export async function diffCommand() {
 
   if (categories.outdated.length > 0) {
     display.newline();
-    display.info('Run `claude-workflow upgrade` to update outdated files.');
+    display.info('Run `worclaude upgrade` to update outdated files.');
   }
 }

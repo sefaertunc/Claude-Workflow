@@ -1,23 +1,23 @@
-# claude-workflow
+# worclaude
 
 A CLI tool that scaffolds a comprehensive Claude Code workflow into any project — derived from 53 tips by Boris Cherny, the creator of Claude Code at Anthropic.
 
-[![npm version](https://img.shields.io/npm/v/claude-workflow.svg)](https://www.npmjs.com/package/claude-workflow)
+[![npm version](https://img.shields.io/npm/v/worclaude.svg)](https://www.npmjs.com/package/worclaude)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Quick Start
 
 ```bash
-npm install -g claude-workflow
+npm install -g worclaude
 cd your-project
-claude-workflow init
+worclaude init
 ```
 
 That's it. The `init` command walks you through project setup interactively.
 
 ## What It Does
 
-Claude Code is powerful out of the box, but it gets dramatically better with structured guidance. `claude-workflow` installs a complete workflow system — agents, slash commands, skills, hooks, and configuration — that turns Claude Code into a disciplined engineering partner. It's the difference between a capable assistant and a well-organized team.
+Claude Code is powerful out of the box, but it gets dramatically better with structured guidance. `worclaude` installs a complete workflow system — agents, slash commands, skills, hooks, and configuration — that turns Claude Code into a disciplined engineering partner. It's the difference between a capable assistant and a well-organized team.
 
 The workflow is based on [53 tips by Boris Cherny](https://www.howborisusesclaudecode.com/), the creator of Claude Code at Anthropic, distilled into a reusable scaffold that works with any tech stack.
 
@@ -52,12 +52,12 @@ your-project/
 
 | Command | Purpose |
 |---|---|
-| `claude-workflow init` | Set up workflow in a new or existing project |
-| `claude-workflow upgrade` | Update workflow to latest version |
-| `claude-workflow status` | Show current installation status |
-| `claude-workflow backup` | Create a backup of Claude setup |
-| `claude-workflow restore` | Restore from a backup |
-| `claude-workflow diff` | Compare current setup vs installed version |
+| `worclaude init` | Set up workflow in a new or existing project |
+| `worclaude upgrade` | Update workflow to latest version |
+| `worclaude status` | Show current installation status |
+| `worclaude backup` | Create a backup of Claude setup |
+| `worclaude restore` | Restore from a backup |
+| `worclaude diff` | Compare current setup vs installed version |
 
 ## Three Scenarios
 
@@ -136,7 +136,7 @@ All 10 commands are installed in every project:
 | `/update-claude-md` | Propose CLAUDE.md updates based on session learnings |
 | `/setup` | **Post-install interview** — fills in all project-specific content |
 
-`/setup` is the key post-install action. After running `claude-workflow init`, open Claude Code and run `/setup`. It interviews you about your project and fills in CLAUDE.md, skills, SPEC.md, and configuration files with real content.
+`/setup` is the key post-install action. After running `worclaude init`, open Claude Code and run `/setup`. It interviews you about your project and fills in CLAUDE.md, skills, SPEC.md, and configuration files with real content.
 
 ## Skills
 
@@ -215,7 +215,7 @@ Default: `auto-allow` mode. Safety comes from structural isolation (worktrees, f
 
 ## After Install — `/setup`
 
-After running `claude-workflow init`, start Claude Code in your project and run:
+After running `worclaude init`, start Claude Code in your project and run:
 
 ```
 /setup
@@ -246,7 +246,7 @@ Create a `.md` file in `.claude/skills/`. Skills are loaded on demand when Claud
 
 ### Settings
 
-`settings.json` controls permissions, hooks, and sandbox. Edit directly or use `claude-workflow upgrade` to merge in new defaults while preserving your customizations.
+`settings.json` controls permissions, hooks, and sandbox. Edit directly or use `worclaude upgrade` to merge in new defaults while preserving your customizations.
 
 ### CLAUDE.md
 
@@ -267,7 +267,7 @@ Six principles guide the workflow design:
 
 Boris Cherny published [53 tips for using Claude Code effectively](https://www.howborisusesclaudecode.com/). They cover everything from CLAUDE.md structure to agent design to session management. The tips are excellent — but implementing them manually in every project is tedious and error-prone.
 
-`claude-workflow` packages all 53 tips into a single `init` command. You get the full workflow in seconds, customized for your tech stack, with upgrade support to pick up improvements over time.
+`worclaude` packages all 53 tips into a single `init` command. You get the full workflow in seconds, customized for your tech stack, with upgrade support to pick up improvements over time.
 
 ## Credits
 

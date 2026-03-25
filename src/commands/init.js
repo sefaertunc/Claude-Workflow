@@ -254,7 +254,7 @@ function buildTemplateVariables(selections) {
 
   return {
     project_name: projectName,
-    description: description || 'A project scaffolded with Claude Workflow',
+    description: description || 'A project scaffolded with Worclaude',
     tech_stack_filled_during_init: techStackText,
     tech_stack: techStackText,
     tech_stack_table: techStackTable,
@@ -558,15 +558,15 @@ export async function initCommand() {
   if (scenario === 'upgrade') {
     const meta = await readWorkflowMeta(projectRoot);
     display.info(
-      `This project was initialized with Claude Workflow v${meta?.version || 'unknown'}.`
+      `This project was initialized with Worclaude v${meta?.version || 'unknown'}.`
     );
-    display.info('Use `claude-workflow upgrade` to update.');
+    display.info('Use `worclaude upgrade` to update.');
     return;
   }
 
   // Step 2: Welcome
   const version = await getPackageVersion();
-  display.header(`Claude Workflow v${version}`);
+  display.header(`Worclaude v${version}`);
   display.newline();
 
   // Step 3: If existing project, show detection report and confirm

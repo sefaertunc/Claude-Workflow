@@ -11,7 +11,7 @@ import { diffCommand } from './commands/diff.js';
 const program = new Command();
 
 program
-  .name('claude-workflow')
+  .name('worclaude')
   .version('1.0.0')
   .description('Scaffold a comprehensive Claude Code workflow into any project');
 

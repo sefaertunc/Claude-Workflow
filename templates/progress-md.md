@@ -5,7 +5,7 @@
 **Last Updated:** {timestamp}
 
 ## Completed
-- [x] Project setup with Claude Workflow
+- [x] Project setup with Worclaude
 
 ## In Progress
 - [ ] Define project spec in SPEC.md

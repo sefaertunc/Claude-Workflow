@@ -15,17 +15,17 @@ export async function statusCommand() {
   const projectRoot = process.cwd();
 
   if (!(await workflowMetaExists(projectRoot))) {
-    display.info('Workflow is not installed. Run `claude-workflow init` to set up.');
+    display.info('Workflow is not installed. Run `worclaude init` to set up.');
     return;
   }
 
   const meta = await readWorkflowMeta(projectRoot);
   if (!meta) {
-    display.error('workflow-meta.json is corrupted. Run `claude-workflow init` to reinstall.');
+    display.error('workflow-meta.json is corrupted. Run `worclaude init` to reinstall.');
     return;
   }
 
-  display.header('Claude Workflow Status');
+  display.header('Worclaude Status');
   display.newline();
 
   // Version and dates

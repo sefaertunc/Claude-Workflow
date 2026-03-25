@@ -1,11 +1,11 @@
-# SPEC.md — Claude Workflow CLI
+# SPEC.md — Worclaude CLI
 
 ## Product Overview
 
-**claude-workflow** is a CLI tool that scaffolds a comprehensive Claude Code workflow system into any project. It installs agents, skills, slash commands, hooks, permissions, and configuration files derived from 53 tips by Boris Cherny (creator of Claude Code at Anthropic).
+**worclaude** is a CLI tool that scaffolds a comprehensive Claude Code workflow system into any project. It installs agents, skills, slash commands, hooks, permissions, and configuration files derived from 53 tips by Boris Cherny (creator of Claude Code at Anthropic).
 
-**Install:** `npm install -g claude-workflow`
-**Usage:** `claude-workflow init` in any project directory
+**Install:** `npm install -g worclaude`
+**Usage:** `worclaude init` in any project directory
 
 ---
 
@@ -13,12 +13,12 @@
 
 | Command | Purpose |
 |---|---|
-| `claude-workflow init` | Scaffold workflow into a project (fresh or existing) |
-| `claude-workflow upgrade` | Update universal components to latest version |
-| `claude-workflow status` | Show current workflow state, version, customizations |
-| `claude-workflow backup` | Manual backup of current Claude setup |
-| `claude-workflow restore` | Restore from a backup |
-| `claude-workflow diff` | Compare current setup vs latest workflow version |
+| `worclaude init` | Scaffold workflow into a project (fresh or existing) |
+| `worclaude upgrade` | Update universal components to latest version |
+| `worclaude status` | Show current workflow state, version, customizations |
+| `worclaude backup` | Manual backup of current Claude setup |
+| `worclaude restore` | Restore from a backup |
+| `worclaude diff` | Compare current setup vs latest workflow version |
 
 ---
 
@@ -31,7 +31,7 @@ No `.claude/` directory or `CLAUDE.md` exists. Full interactive scaffold.
 Project has some Claude Code setup (CLAUDE.md, skills, hooks, etc.). Smart merge with backup.
 
 ### Scenario C: Upgrade
-Project previously ran `claude-workflow init`. Update universal components without touching customizations.
+Project previously ran `worclaude init`. Update universal components without touching customizations.
 
 **Detection logic:**
 - No `.claude/` and no `CLAUDE.md` → Scenario A
@@ -44,9 +44,9 @@ Project previously ran `claude-workflow init`. Update universal components witho
 
 ### Step 1: Welcome & Project Info
 ```
-$ claude-workflow init
+$ worclaude init
 
-  Claude Workflow v1.0.0
+  Worclaude v1.0.0
   ─────────────────────
 
 ? Project name: My Project
@@ -66,7 +66,7 @@ Multi-select with inline descriptions and smart redundancy detection.
   ◻ DevOps / Infrastructure    — Infrastructure, CI/CD, deployment
 
   ℹ Not sure? Pick what's closest. You can add or remove
-    agents later with `claude-workflow upgrade`.
+    agents later with `worclaude upgrade`.
 ```
 
 If "Full-stack web" AND "Backend / API" or "Frontend / UI" are selected:
@@ -93,10 +93,10 @@ Multi-select languages. Determines permissions, hooks (formatter), and template 
 
   ℹ This determines which tool permissions and formatters
     are added. You can update later by editing
-    .claude/settings.json or running `claude-workflow upgrade`.
+    .claude/settings.json or running `worclaude upgrade`.
 
 ? Do you use Docker in this project currently? (y/N)
-  ℹ If you add Docker later, run `claude-workflow upgrade`
+  ℹ If you add Docker later, run `worclaude upgrade`
     to add Docker permissions and tools.
 ```
 
@@ -179,9 +179,9 @@ Create all files. Show progress.
 
 ### Step 1: Detection & Backup
 ```
-$ claude-workflow init
+$ worclaude init
 
-  Claude Workflow v1.0.0
+  Worclaude v1.0.0
   ─────────────────────
 
   Detected existing Claude Code setup:
@@ -278,7 +278,7 @@ Default: keep user's, generate suggestions file.
 
 ### Step 1: Version Check
 ```
-$ claude-workflow upgrade
+$ worclaude upgrade
 
   Current version: 1.0.0
   Available version: 1.1.0
@@ -307,9 +307,9 @@ Same tiered merge as Scenario B for conflicting files. Auto-update unchanged fil
 ## Status Command
 
 ```
-$ claude-workflow status
+$ worclaude status
 
-  Claude Workflow v1.0.0
+  Worclaude v1.0.0
   Installed: 2026-03-23
 
   Project type: Backend / API
@@ -337,7 +337,7 @@ $ claude-workflow status
 
 ### Backup
 ```
-$ claude-workflow backup
+$ worclaude backup
 
   Creating backup...
   ✓ Backed up to .claude-backup-20260323-143022/
@@ -350,7 +350,7 @@ $ claude-workflow backup
 
 ### Restore
 ```
-$ claude-workflow restore
+$ worclaude restore
 
   Available backups:
   1. .claude-backup-20260323-143022 (2 hours ago)
@@ -366,7 +366,7 @@ $ claude-workflow restore
 
 ### Diff
 ```
-$ claude-workflow diff
+$ worclaude diff
 
   Comparing current setup to workflow v1.0.0:
 
@@ -888,10 +888,10 @@ Default: Sandbox with auto-allow. Structural safety via file and network isolati
 ### package.json bin entry
 ```json
 {
-  "name": "claude-workflow",
+  "name": "worclaude",
   "version": "1.0.0",
   "bin": {
-    "claude-workflow": "./src/index.js"
+    "worclaude": "./src/index.js"
   }
 }
 ```
@@ -901,7 +901,7 @@ Default: Sandbox with auto-allow. Structural safety via file and network isolati
 ## Project Structure
 
 ```
-Claude-Workflow/
+Worclaude/
 ├── package.json
 ├── README.md
 ├── LICENSE
