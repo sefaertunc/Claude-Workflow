@@ -579,10 +579,14 @@ onUnmounted(() => {
 
 .checkbox-checked {
   color: #27c93f;
+  font-size: 18px;
+  vertical-align: middle;
 }
 
 .checkbox-unchecked {
   color: #888;
+  font-size: 18px;
+  vertical-align: middle;
 }
 
 .radio-option {
