@@ -3,7 +3,7 @@
 ## Current Status
 
 **Phase:** All phases complete — published on npm as `worclaude`
-**Version:** 1.2.3
+**Version:** 1.2.8
 **Last Updated:** 2026-03-25
 
 ## Completed
@@ -70,7 +70,7 @@
   - [x] Cross-platform hardening: path separator normalization in init.js
   - [x] Cross-platform hardening: CRLF-safe split() in claude-md-merge.js and detector.js
 
-- [x] Post-release improvements (v1.1.0–v1.2.3)
+- [x] Post-release improvements (v1.1.0–v1.2.8)
   - [x] Expanded tech stack: 16 language options (added Java, C#, C/C++, PHP, Ruby, Kotlin, Swift, Dart, Scala, Elixir, Zig) with per-language settings templates and formatters
   - [x] Renamed project from claude-workflow to worclaude
   - [x] VitePress documentation site with interactive terminal demo
@@ -94,6 +94,13 @@
   - [x] Fix: upgrade post-completion summary shows customized file count
   - [x] No-memory rule added to setup interview template
   - [x] GitHub Pages deployment workflow
+  - [x] `worclaude upgrade` CLI self-update: checks npm registry, offers to update before upgrading workflow files
+  - [x] `worclaude --version` now reads dynamically from package.json (was hardcoded to 1.0.0)
+  - [x] `worclaude status` npm version check: shows "(up to date)", "(upgrade available)", or "(CLI update available)"
+  - [x] Shared `getLatestNpmVersion()` utility (src/utils/npm.js) with 5s timeout for graceful offline degradation
+  - [x] `getPackageVersionSync()` added for Commander.js synchronous version display
+  - [x] Fix: status no longer says "(up to date)" when workflow version is behind CLI version
+  - [x] Fix: self-update EACCES error shows clean "Try: sudo npm install -g" instead of raw npm error dump
 
 ## Stats
 
@@ -103,7 +110,7 @@
 - 9 universal skills + 3 template skills
 - 8 SPEC.md template variants (1 default + 7 project-type-specific)
 - 16 tech stack language options with per-language settings templates
-- 142 tests across 16 test files
+- 149 tests across 17 test files
 - 3 scenarios: fresh, existing, upgrade
 
 ## Notes

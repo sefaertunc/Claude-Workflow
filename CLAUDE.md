@@ -53,6 +53,8 @@ See `.claude/skills/` for project-specific guidance.
 
 - `src/data/agents.js` — All catalogs, tech stacks, formatters, categories
 - `src/utils/display.js` — Bold + Badges visual system for CLI output
+- `src/utils/npm.js` — Shared npm registry check (used by upgrade + status)
+- `src/core/config.js` — Version readers (sync + async), workflow-meta management
 - `templates/settings/` — 16 language-specific + 1 base + 1 docker settings templates
 
 ## Gotchas
@@ -61,3 +63,5 @@ See `.claude/skills/` for project-specific guidance.
 - Shell-escaped braces in user JSON files need handling during merge
 - Docker edit permissions live in docker.json, not base.json
 - Spinner must be stopped before interactive prompts in Scenario B merge
+- Global npm install requires sudo on some systems — self-update detects EACCES and suggests sudo
+- Commander.js `.version()` is synchronous — use `getPackageVersionSync()` not the async variant

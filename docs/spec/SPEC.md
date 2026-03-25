@@ -4,7 +4,7 @@
 
 **worclaude** is a CLI tool that scaffolds a comprehensive Claude Code workflow system into any project. It installs agents, skills, slash commands, hooks, permissions, and configuration files derived from 53 tips by Boris Cherny (creator of Claude Code at Anthropic).
 
-**Version:** 1.2.3
+**Version:** 1.2.8
 **Install:** `npm install -g worclaude`
 **Usage:** `worclaude init` in any project directory
 
@@ -52,7 +52,7 @@ Project previously ran `worclaude init`. Update universal components without tou
 ```
 $ worclaude init
 
-  Worclaude v1.2.3
+  Worclaude v1.2.8
   ─────────────────────
 
 ? Project name: My Project
@@ -212,7 +212,7 @@ Create all files. Show progress.
 ```
 $ worclaude init
 
-  Worclaude v1.2.3
+  Worclaude v1.2.8
   ─────────────────────
 
   Detected existing Claude Code setup:
@@ -314,14 +314,20 @@ Default: keep user's, generate suggestions file.
 
 ## Upgrade Flow (Scenario C)
 
-### Step 1: Version Check
+### Step 1: CLI Self-Update Check
+
+Checks the npm registry for a newer CLI version. If found, offers to self-update. On permission errors, suggests `sudo`.
 
 ```
 $ worclaude upgrade
 
-  Current version: 1.0.0
-  Available version: 1.1.0
+  ℹ New worclaude version available: v1.2.6 → v1.2.8
+? Update worclaude CLI?
+  ❯ Yes, update and continue
+    No, continue with current version
 ```
+
+After self-update, re-run is needed (new code must load).
 
 ### Step 2: Change Detection
 
@@ -348,28 +354,27 @@ Same tiered merge as Scenario B for conflicting files. Auto-update unchanged fil
 
 ## Status Command
 
+Checks the npm registry and shows version status:
+- `(up to date)` — workflow and CLI are current
+- `(upgrade available: vX.Y.Z)` — workflow is behind CLI, run `worclaude upgrade`
+- `(CLI update available: vX.Y.Z)` — newer CLI on npm, run `npm install -g worclaude@latest`
+- No suffix when offline (graceful degradation)
+
 ```
 $ worclaude status
 
-  Worclaude v1.2.3
-  Installed: 2026-03-23
+  ▌ WORCLAUDE STATUS
+  │ Version    v1.2.8 (up to date)
+  │ Project    Backend / API
+  │ Stack      Python
+  │ Agents     5 universal + 6 optional
+  │ Commands   10
+  │ Skills     12
 
-  Project type: Backend / API
-  Tech stack: Python
+  ℹ Customized files (differ from installed version):
+        ~ CLAUDE.md
 
-  Universal agents: 5/5 installed
-  Optional agents: 6 installed (api-designer, database-analyst,
-                    security-reviewer, auth-auditor, bug-fixer,
-                    performance-auditor)
-  Commands: 9/9 installed
-  Skills: 9 universal + 3 templates
-
-  Customized files (differ from installed version):
-    .claude/skills/testing.md
-    CLAUDE.md
-
-  Hooks: 3 active (format, postcompact, notification)
-  Sandbox: auto-allow
+      Hooks:        3 active
   Permissions: 47 rules
 ```
 
@@ -413,7 +418,7 @@ $ worclaude restore
 ```
 $ worclaude diff
 
-  Comparing current setup to workflow v1.2.3:
+  Comparing current setup to workflow v1.2.8:
 
   Modified (your changes):
   ~ CLAUDE.md (added 5 gotchas)
@@ -1028,7 +1033,7 @@ Default: Sandbox with auto-allow. Structural safety via file and network isolati
 ```json
 {
   "name": "worclaude",
-  "version": "1.2.3",
+  "version": "1.2.8",
   "bin": {
     "worclaude": "./src/index.js"
   }
@@ -1174,12 +1179,16 @@ worclaude/
 - README with documentation
 - npm publish preparation
 
-### Post-release (v1.1.0–v1.2.3)
+### Post-release (v1.1.0–v1.2.8)
 
 - Expanded tech stack from 6 to 16 language options with per-language settings templates and formatters
 - Renamed project from claude-workflow to worclaude
 - VitePress documentation site with interactive terminal demo and GitHub Pages deployment
 - Bold + Badges visual system restyle for all CLI output
+- CLI self-update: `worclaude upgrade` checks npm registry, offers self-update with sudo detection
+- Dynamic `--version` from package.json (was hardcoded)
+- Smart version status in `worclaude status`: distinguishes workflow-outdated vs CLI-outdated vs up-to-date
+- Shared `getLatestNpmVersion()` utility with 5s timeout for graceful offline degradation
 - Numerous UX improvements and bug fixes (see PROGRESS.md for full list)
 
 ---
