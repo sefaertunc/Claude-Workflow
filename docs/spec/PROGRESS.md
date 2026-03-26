@@ -3,7 +3,7 @@
 ## Current Status
 
 **Phase:** All phases complete — published on npm as `worclaude`
-**Version:** 1.3.1
+**Version:** 1.3.2
 **Last Updated:** 2026-03-26
 
 ## Completed
@@ -108,7 +108,7 @@
     - [x] CLAUDE.md template updated: Session Protocol reads agent-routing.md on start
     - [x] 17 new tests (13 unit + 4 integration)
 
-- [x] CI & Branching Strategy (v1.3.1)
+- [x] CI & Branching Strategy (v1.3.2)
   - [x] GitHub Actions CI workflow: test matrix (Node 18/20/22) + Prettier format check
   - [x] CI triggers: PRs to main/develop, pushes to develop
   - [x] CONTRIBUTING.md rewritten for develop→main branching model
