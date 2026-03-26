@@ -9,10 +9,17 @@ worclaude — CLI tool that scaffolds a comprehensive Claude Code workflow into 
 
 ## Tech Stack
 
-- Node.js CLI tool
-- Commander.js (CLI framework), Inquirer.js (prompts), Chalk (styling), Ora (spinners)
-- fs-extra (file ops), crypto (hashing)
-- Vitest (testing), ESLint + Prettier (linting)
+- **Runtime:** Node.js 18+ (pure ESM, no build step, no transpilation)
+- **CLI framework:** Commander.js ^13.1.0
+- **Interactive prompts:** Inquirer.js ^12.5.0 (watch for breaking changes between majors)
+- **Terminal styling:** Chalk ^5.4.1 (via `display.*` namespace — never use `console.log` directly)
+- **Spinners:** Ora ^8.2.0
+- **File operations:** fs-extra ^11.3.0
+- **Hashing:** Node.js crypto (built-in, CRLF-normalized)
+- **Testing:** Vitest (180 tests, 19 files)
+- **Linting:** ESLint flat config (eslint.config.js) + Prettier (single quotes, trailing commas ES5, 100 char width)
+- **Docs:** VitePress (GitHub Pages via GitHub Actions)
+- **Package manager:** npm (caret ranges, no lockfile pinning)
 
 ## Commands
 
@@ -48,6 +55,12 @@ See `.claude/skills/` for project-specific guidance.
 4. Cross-platform: use path.join, os.platform(), never hardcode separators.
 5. Self-healing: same mistake twice → update this file.
 6. Use subagents for side work to keep main context clean.
+7. Never do JSON text substitution on stringified JSON — always operate on parsed objects.
+8. Never use `console.log` for user output — use `display.*` functions.
+9. Never leave Ora spinner running when Inquirer prompt fires.
+10. Always add new agents to both `agents.js` AND `agent-registry.js`.
+11. Always add new template files to both scaffolder AND workflow-meta hash computation.
+12. Always handle the "Other / None" language edge case in stack-related code.
 
 ## Key Directories
 
@@ -59,11 +72,37 @@ See `.claude/skills/` for project-specific guidance.
 - `src/core/config.js` — Version readers (sync + async), workflow-meta management
 - `templates/settings/` — 16 language-specific + 1 base + 1 docker settings templates
 
+## Verification
+
+```bash
+npm test && npm run lint          # Primary — run before every commit
+npm run format                    # Auto-fix formatting (or rely on PostToolUse hook)
+npm run docs:build                # Only when touching docs/ directory
+```
+
+Manual scenario testing (when touching merge/scaffold/settings logic):
+
+```bash
+# Scenario A (fresh)
+rm -rf /tmp/test-fresh && mkdir /tmp/test-fresh && cd /tmp/test-fresh && git init && node ~/SEFA/GIT/Claude-Workflow/src/index.js init
+
+# Scenario B (existing)
+rm -rf /tmp/test-existing && mkdir /tmp/test-existing && cd /tmp/test-existing && git init && mkdir -p .claude/skills && echo "# My CLAUDE" > CLAUDE.md && node ~/SEFA/GIT/Claude-Workflow/src/index.js init
+
+# Scenario C (upgrade) — run Scenario A first, then:
+cd /tmp/test-fresh && node ~/SEFA/GIT/Claude-Workflow/src/index.js init
+```
+
 ## Gotchas
 
-- JSON text substitution in settings builder can break on special chars — use safe merge
-- Shell-escaped braces in user JSON files need handling during merge
+- JSON text substitution in settings builder can break on special chars — always operate on parsed objects, never on stringified JSON
+- Shell-escaped braces (\{ → {) in user JSON files need two-pass parsing in `parseUserJson()` — don't simplify to single pass
 - Docker edit permissions live in docker.json, not base.json
 - Spinner must be stopped before interactive prompts in Scenario B merge
 - Global npm install requires sudo on some systems — self-update detects EACCES and suggests sudo
 - Commander.js `.version()` is synchronous — use `getPackageVersionSync()` not the async variant
+- `replaceHookCommands()` uses regex on JSON hook strings — formatter commands with curly braces can break it
+- CRLF normalization in hashing: always use the normalized hash function, never raw crypto on file content
+- Tiered merge is strict: Tier 1 only when file doesn't exist, Tier 2 always saves alongside (even if identical), Tier 3 only for CLAUDE.md and hooks
+- Settings merge is append-only for permissions — never removes or replaces existing user rules
+- `merger.js` is the one exception to "core/ never prompts" — it calls `promptHookConflict()` directly
