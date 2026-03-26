@@ -505,9 +505,11 @@ function displayFreshSuccess(selections, skipped) {
   display.success('.gitignore');
   if (skipped.progressMd) {
     display.dim('  docs/spec/PROGRESS.md — already exists, skipped');
-  } else if (skipped.specMd) {
-    display.success(`docs/spec/${display.dimColor('             PROGRESS.md, SPEC.md')}`);
-  } else {
+  }
+  if (skipped.specMd) {
+    display.dim('  docs/spec/SPEC.md — already exists, skipped');
+  }
+  if (!skipped.progressMd && !skipped.specMd) {
     display.success(`docs/spec/${display.dimColor('             PROGRESS.md, SPEC.md')}`);
   }
 
