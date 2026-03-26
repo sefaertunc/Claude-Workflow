@@ -50,8 +50,10 @@ export async function updateGitignore(projectDir) {
   const header = '# Worclaude (generated workflow files)';
 
   let content = '';
-  if (await fs.pathExists(gitignorePath)) {
+  try {
     content = await fs.readFile(gitignorePath, 'utf8');
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
   }
 
   const missing = entries.filter((entry) => !content.includes(entry));
