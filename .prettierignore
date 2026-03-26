@@ -1,3 +1,4 @@
 templates/
+.claude/
 node_modules/
 coverage/

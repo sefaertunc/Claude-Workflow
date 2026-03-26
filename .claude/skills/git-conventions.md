@@ -1,5 +1,5 @@
 ---
-description: 'Branch naming, commit message format, PR workflow, worktree conventions'
+description: "Branch naming, commit message format, PR workflow, worktree conventions"
 ---
 
 # Git Conventions
@@ -9,7 +9,6 @@ description: 'Branch naming, commit message format, PR workflow, worktree conven
 Pattern: `{type}/{short-description}`
 
 Types:
-
 - `feature/` — New functionality
 - `fix/` — Bug fixes
 - `refactor/` — Code restructuring without behavior change
@@ -18,7 +17,6 @@ Types:
 - `chore/` — Tooling, dependencies, config
 
 Examples:
-
 - `feature/auth-flow`
 - `fix/login-timeout`
 - `refactor/extract-merger-module`
@@ -43,7 +41,6 @@ Types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `perf`, `ci`
 Scope is optional but helpful: `feat(auth): add OAuth2 token refresh`
 
 Rules:
-
 - Subject line under 72 characters
 - Imperative mood ("add" not "added" or "adds")
 - No period at the end of the subject line
@@ -53,33 +50,19 @@ Rules:
 ## When to Commit
 
 Commit after each logical unit of work:
-
 - A function is complete and tested
 - A refactor is done and tests pass
 - A bug is fixed and verified
 
 Don't batch unrelated changes into one commit. Don't commit broken code.
 
-## Branching Strategy
-
-```
-feature-branch ──PR──▶ develop ──PR──▶ main (release)
-```
-
-- `develop` — active development. Contributors fork, branch from `develop`, and PR back to `develop`.
-- `main` — production releases. Maintainer-only, merged from `develop`.
-- `gh-pages` — auto-deployed docs. Maintainer-only.
-
-All feature/bugfix branches are created from and merged back into `develop`. Never PR directly to `main`.
-
 ## PR Workflow
 
 1. Push your branch
-2. Create PR with `gh pr create --base develop` (feature/bugfix branches target `develop`)
-3. When on `develop`, PR targets `main`: `gh pr create --base main` (release merges only)
-4. PR title follows same format as commit subject: `type(scope): description`
-5. PR body includes: what changed, why, how to test, anything reviewers should know
-6. Request review if the project has reviewers configured
+2. Create PR with `gh pr create`
+3. PR title follows same format as commit subject: `type(scope): description`
+4. PR body includes: what changed, why, how to test, anything reviewers should know
+5. Request review if the project has reviewers configured
 
 ## Squash vs Merge
 

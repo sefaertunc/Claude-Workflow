@@ -1,5 +1,4 @@
 Scan the codebase for technical debt:
-
 - Duplicated code
 - Dead code (unused functions, imports, variables)
 - TODO/FIXME/HACK comments
