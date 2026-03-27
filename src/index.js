@@ -8,6 +8,7 @@ import { statusCommand } from './commands/status.js';
 import { backupCommand } from './commands/backup.js';
 import { restoreCommand } from './commands/restore.js';
 import { diffCommand } from './commands/diff.js';
+import { deleteCommand } from './commands/delete.js';
 
 const program = new Command();
 
@@ -45,5 +46,10 @@ program
   .command('diff')
   .description('Compare current setup against installed workflow version')
   .action(diffCommand);
+
+program
+  .command('delete')
+  .description('Remove worclaude workflow from project')
+  .action(deleteCommand);
 
 program.parse();

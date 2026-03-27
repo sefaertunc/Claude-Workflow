@@ -435,6 +435,95 @@ $ worclaude diff
 
 ---
 
+## Delete Command
+
+Removes worclaude workflow files from a project. Two modes:
+
+1. **Remove from project** — removes scaffolded files, keeps CLI installed
+2. **Remove from project + uninstall hint** — same cleanup, then prints `npm uninstall -g worclaude`
+
+### Safety Rules
+
+- Files tracked in `workflow-meta.json` `fileHashes` with unchanged hash → auto-delete
+- Files tracked but user-modified (hash mismatch) → ask user (default: delete, backed up)
+- `workflow-meta.json` → always delete (pure worclaude metadata)
+- `settings.json` → ask user (may contain user-added permissions/hooks)
+- `.workflow-ref.md` / `.workflow-suggestions` files → auto-delete (upgrade artifacts)
+- User-added files in `.claude/` (not in `fileHashes`) → never delete
+- Claude Code system dirs (`projects/`, `worktrees/`, `todos/`, `memory/`) → never delete
+- Root files (`CLAUDE.md`, `.mcp.json`, `docs/spec/*`) → ask user (default: keep)
+- `.gitignore` → remove `# Worclaude` header and `.claude/` entry only; keep `.claude-backup-*/`
+- Backup directories → never delete
+
+### Flow
+
+```
+$ worclaude delete
+
+  ▌ DELETE WORKFLOW
+
+? What would you like to do?
+  ❯ Remove workflow from this project
+    Remove workflow and uninstall worclaude globally
+    ──────
+    ← Cancel
+
+  │ Workflow files in .claude/:
+  │   ✓ 28 unmodified files (safe to remove)
+  │   ~ 3 files you've customized
+  │       .claude/agents/plan-reviewer.md
+  │       .claude/skills/testing.md
+  │       .claude/commands/start.md
+  │   ● 2 user-added files (will NOT be touched)
+
+? 3 file(s) have been customized. What should we do?
+  ❯ Delete them too (they'll be in the backup)
+    Keep them in .claude/
+
+  ℹ These files were created or modified by worclaude but may contain your work:
+      .claude/settings.json (permissions & hooks)
+      CLAUDE.md
+      .mcp.json
+      docs/spec/PROGRESS.md
+      docs/spec/SPEC.md
+
+? What would you like to do with these files?
+  ❯ Keep all (recommended)
+    Let me choose which to remove
+    Remove all
+
+  ⚠ This will permanently delete 31 file(s).
+    A backup will be created first.
+
+? Confirm deletion?
+    Yes, delete
+  ❯ No, cancel
+
+  ✓ Workflow removed!
+    ✓ Removed 28 workflow files from .claude/
+    ✓ Cleaned up .gitignore
+    ℹ Kept 2 user-added file(s) in .claude/
+    ℹ Kept: .claude/settings.json, CLAUDE.md, .mcp.json, docs/spec/PROGRESS.md, docs/spec/SPEC.md
+      Backup: .claude-backup-20260327-143052/
+
+  ℹ To uninstall worclaude CLI globally, run:
+    npm uninstall -g worclaude
+```
+
+### Backup
+
+A backup is always created before any deletion. The backup includes `.claude/`, `CLAUDE.md`, `.mcp.json`, and `docs/spec/` files.
+
+### Empty Directory Cleanup
+
+After file removal:
+
+- Empty `.claude/agents/`, `.claude/commands/`, `.claude/skills/` → removed
+- Empty `.claude/` → removed (only if no user files remain)
+- Empty `docs/spec/` → removed; empty `docs/` → removed
+
+---
+
 ## File Templates
 
 ### CLAUDE.md Template
@@ -656,6 +745,8 @@ See `.claude/skills/` — load only what's relevant:
 | Linux | `notify-send 'Claude Code' 'Session needs attention' 2>/dev/null \|\| true` |
 | macOS | `osascript -e 'display notification "Session needs attention" with title "Claude Code"' 2>/dev/null \|\| true` |
 | Windows | `powershell -command "New-BurntToastNotification -Text 'Claude Code','Session needs attention'" 2>/dev/null \|\| true` |
+
+> **Windows note:** Claude Code runs hooks in bash (Git Bash / WSL) on all platforms. All hook commands use Unix shell syntax and require [Git for Windows](https://gitforwindows.org) to be installed.
 
 ---
 
