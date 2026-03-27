@@ -37,6 +37,16 @@ export async function createBackup(projectRoot) {
     await copyFile(mcpPath, path.join(backupDir, '.mcp.json'));
   }
 
+  const progressPath = path.join(projectRoot, 'docs', 'spec', 'PROGRESS.md');
+  if (await fileExists(progressPath)) {
+    await copyFile(progressPath, path.join(backupDir, 'docs', 'spec', 'PROGRESS.md'));
+  }
+
+  const specPath = path.join(projectRoot, 'docs', 'spec', 'SPEC.md');
+  if (await fileExists(specPath)) {
+    await copyFile(specPath, path.join(backupDir, 'docs', 'spec', 'SPEC.md'));
+  }
+
   return backupDir;
 }
 
