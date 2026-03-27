@@ -159,6 +159,15 @@
   - [x] 39 tests covering pre-flight, cancellation, classification, removal, edge cases
   - [x] SPEC.md Delete Command section added
 
+- [x] Windows compatibility (v1.5.0, 2026-03-27)
+  - [x] Confirmed Claude Code runs hooks in bash (Git Bash / WSL) on Windows — Unix shell commands work without modification
+  - [x] Added Windows platform notice during `worclaude init` (Git Bash requirement)
+  - [x] Removed dead `FORMATTER_COMMANDS` export from agents.js (templates are the runtime source)
+  - [x] Added Windows Compatibility section to hooks.md documentation
+  - [x] Added Windows note to SPEC.md notification commands table
+  - [x] Added Windows note to context-management.md skill template
+  - [x] Added 5 cross-platform tests (Windows platform mock in merger.test.js)
+
 ## Stats
 
 - 7 CLI commands: init, upgrade, status, backup, restore, diff, delete
@@ -167,7 +176,7 @@
 - 9 universal skills + 3 template skills + 1 generated skill (agent-routing)
 - 8 SPEC.md template variants (1 default + 7 project-type-specific)
 - 16 tech stack language options with per-language settings templates
-- 223 tests across 20 test files
+- 228 tests across 20 test files
 - 3 scenarios: fresh, existing, upgrade
 
 ## Notes
