@@ -108,3 +108,4 @@ cd /tmp/test-fresh && node ~/SEFA/GIT/Claude-Workflow/src/index.js init
 - Settings merge is append-only for permissions — never removes or replaces existing user rules
 - `merger.js` is the one exception to "core/ never prompts" — it calls `promptHookConflict()` directly
 - Use `Bash(git:*)` wildcard for git permissions, never list subcommands individually — new subcommands will trigger approval prompts
+- Commands with pipes (`|`) and redirects (`2>&1`) trigger security prompts even in auto-accept mode. This is a Claude Code safety feature for compound shell commands — cannot be fully eliminated via permissions. Use "Yes, and don't ask again" when prompted.

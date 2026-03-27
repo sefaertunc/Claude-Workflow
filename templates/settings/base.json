@@ -22,6 +22,13 @@
       "Bash(rm:*)",
       "Bash(make:*)",
 
+      "Bash(npm test:*)", "Bash(npm run:*)", "Bash(cd:*)",
+
+      "// -- Read Permissions --",
+      "Read(src/**)", "Read(tests/**)", "Read(templates/**)",
+      "Read(docs/**)", "Read(.claude/**)",
+      "Read(*.md)", "Read(*.json)", "Read(*.js)",
+
       "// -- Edit Permissions --",
       "Edit(.claude/**)", "Edit(docs/**)",
       "Edit(src/**)", "Edit(tests/**)", "Edit(test/**)",
